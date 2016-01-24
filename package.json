@@ -4,7 +4,10 @@
   "description": "Communication and data parsing with OBD-II connector, ELM327.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build && set DEBUG=OBD2* && node index.js",
+    "test": "npm run build && set NODE_ENV=debug && set DEBUG=OBD2*,-OBD2.Serial.* && node test.js",
+    "build": "node bin/build",
+    "test-off": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -33,5 +36,11 @@
   "bugs": {
     "url": "https://github.com/sipimokus/node-obd2/issues"
   },
-  "homepage": "https://github.com/sipimokus/node-obd2"
+  "homepage": "https://github.com/sipimokus/node-obd2",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "repeat": "0.0.6",
+    "serialport": "^2.0.6",
+    "tsd": "^0.6.5"
+  }
 }
