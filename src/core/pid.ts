@@ -151,7 +151,10 @@ export namespace OBD2
 
 			public getListECU()
 			{
-				return this.listEcu;
+				return this.listEcu.filter( ( value, index, self ) =>
+				{
+					return self.indexOf( value ) === index;
+				});
 			}
 
 			public getList = () =>

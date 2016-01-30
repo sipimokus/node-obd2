@@ -16,6 +16,6 @@ module.exports =
     },
     testResponse: function( emulator )
     {
-        return Math.random() * 4000 + 1000;
+        return parseInt( Math.random() * 4000 + 1000 );
     }
 };

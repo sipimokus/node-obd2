@@ -73,7 +73,8 @@ export namespace OBD2
 					return;
 				}
 
-				if (data == "0100" || data == "0120" || data == "0140" || data == "0160")
+				//if (data == "0100" || data == "0120" || data == "0140" || data == "0160" || data == "0180" || data == "01A0" || data == "01C0")
+				if (data == "0100" || data == "0120")
 				{
 					return this.findSupportedPins(data);
 				}
@@ -121,16 +122,19 @@ export namespace OBD2
 					[ 0,  0,  0,  0,  0,  0,  0,  0],
 				];
 
-				if (data == "0100") {
+				if (data == "0100")
+				{
 					pins[1][3] = 1;
 					pins[1][4] = 1;
 					pins[1][5] = 1;
 					pins[1][6] = 1;
 				}
-				if (data == "0120") {
+				if (data == "0120")
+				{
 					pins[0][1] = 1;
 				}
-				if (data == "0140" || data == "0160" || data == "0180" || data == "01A0" || data == "01C0") {
+				if (data == "0140" || data == "0160" || data == "0180" || data == "01A0" || data == "01C0")
+				{
 					return this.writeNext('NO DATA');
 				}
 
@@ -161,7 +165,7 @@ export namespace OBD2
 					byteString.push(s);
 				}
 
-				this.writeNext(byteString.join(''));
+				return this.writeNext(byteString.join(''));
 
 			};
 

@@ -13,8 +13,9 @@ var OBD = new obd2({
 
 OBD.start(function( car )
 {
+    console.log("TEST START, OBD READY");
     //console.log( OBD.PID.getList() );
-    debug(OBD.listPID());
+    //debug(OBD.listPID());
 
     /*setInterval(()=>{
         OBD.readPID("0c");
@@ -22,16 +23,21 @@ OBD.start(function( car )
 */
 
     //OBD.sendPID("00", "01");
+    OBD._initListPID(function(){
+        console.log("PIDSUPP");
+        console.log(OBD.listPID());
+    });
 
     //OBD.Repeat.stop();
     //OBD.Repeat.start();
-    OBD.Repeat.addItem("0C");
-    OBD.Repeat.addItemList(["0A", "0B", "0D"]);
+    //OBD.Repeat.addItem("0C");
+    //OBD.Repeat.addItemList(["0A", "0B", "0D"]);
 
     // All data and response object
     OBD.on("data", function( value, data )
     {
         //OBD.Repeat.nextItem();
+        console.log(value, data);
     });
 
     // ECU commands
@@ -43,7 +49,7 @@ OBD.start(function( car )
     // PID commands
     OBD.on("pid", function( value, data )
     {
-        debug(value);
+        //debug(value);
     });
 
     // DCT commands

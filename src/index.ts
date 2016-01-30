@@ -76,10 +76,10 @@ export namespace OBD2
 
 			this.Serial.on("data", ( data, port ) =>
 			{
-				this.OBD.parseDataStream( data, ( type, mess ) =>
+				this.OBD.parseDataStream( data, ( type, mess, obdData ) =>
 				{
-					this.emit( "data", mess, data );
-					this.emit(  type , mess, data );
+					this.emit( "data", mess, obdData );
+					this.emit(  type , mess, obdData );
 				});
 			});
 		};
@@ -180,6 +180,7 @@ export namespace OBD2
 
 		public sendPID( pidNumber : string, pidMode? : string )
 		{
+
 			pidMode = !pidMode ? "01" : pidMode;
 
 			let pidData : any = this.PID.getByPid( pidNumber, pidMode );

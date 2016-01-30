@@ -38,7 +38,7 @@ export namespace OBD2
 				Serial.write("ATSP0");
 
 				// CallBack
-				setTimeout( cb, 500 );
+				setTimeout( cb, 1000 );
 			};
 
 			public disconnect()

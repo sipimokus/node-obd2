@@ -78,7 +78,7 @@ export namespace OBD2
 
 							if ( this._deviceCommands.indexOf(messageString) > -1 )
 							{
-								cb("ecu", messageString);
+								cb("ecu", reply, messageString);
 							}
 							else
 							{
@@ -86,15 +86,15 @@ export namespace OBD2
 
 								if( !reply.value || !reply.name || (!reply.mode && !reply.pid) )
 								{
-									cb("bug", reply);
+									cb("bug", reply, messageString);
 								}
 								else if ( reply.mode == "41" )
 								{
-									cb("pid", reply);
+									cb("pid", reply, messageString);
 								}
 								else if( reply.mode == "43" )
 								{
-									cb("dct", reply);
+									cb("dct", reply, messageString);
 								}
 
 
