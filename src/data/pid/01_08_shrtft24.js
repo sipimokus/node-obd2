@@ -13,5 +13,9 @@ module.exports =
     convertToUseful: function( byteA )
     {
         return ( parseInt( byteA, 16 ) - 128 ) * ( 100 / 128 );
+    },
+    testResponse: function( emulator )
+    {
+        return 1;
     }
 };

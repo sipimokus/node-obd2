@@ -1,6 +1,6 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
-let SerialPort	= require('serialport').SerialPort;
+let SerialPort	= (require('../core/fakeserial')).OBD2.Core.FakeSerial;
 import events	= require('events');
 
 export namespace OBD2
@@ -22,8 +22,9 @@ export namespace OBD2
 			{
 				this.port    = port;
 				this.options = options;
-				//this.Serial  = new SerialPort( this.port, this.options );
-				this.Serial = new (require('../../fakeserial'))();
+				this.Serial  = new SerialPort( this.port, this.options );
+				//this.Serial = new (require('../../fakeserial'))();
+				//this.Serial = new (require('../core/fakeserial'))();
 
 				this._eventHandler();
 

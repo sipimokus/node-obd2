@@ -1,18 +1,18 @@
 module.exports =
 {
     mode:   "01",
-    pid:    "45",
-    name:   "throttlerel",
-    description: "Relative Throttle Position",
+    pid:    "62",
+    name:   "torque_pct",
+    description: "Actual engine percent torque",
 
-    min:    0,
-    max:    100,
+    min:    -125,
+    max:    125,
     unit:   "%",
 
     bytes:  1,
     convertToUseful: function( byteA )
     {
-        return parseInt( byteA, 16 ) * 100 / 255;
+        return ( parseInt( byteA, 16 ) - 125 );
     },
     testResponse: function( emulator )
     {

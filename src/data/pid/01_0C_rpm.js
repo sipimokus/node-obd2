@@ -13,5 +13,9 @@ module.exports =
     convertToUseful: function( byteA, byteB )
     {
         return ( ( parseInt( byteA, 16 ) * 256 ) + parseInt( byteB, 16 ) ) / 4;
+    },
+    testResponse: function( emulator )
+    {
+        return Math.random() * 4000 + 1000;
     }
 };

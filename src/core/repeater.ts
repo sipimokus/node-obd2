@@ -45,7 +45,7 @@ export namespace OBD2
 				if ( this.loop  )
 				{
 					this.pause();
-					if ( !this._list.indexOf( repeatItem ) > -1 )
+					if ( ! ( this._list.indexOf( repeatItem ) >= 0 ) )
 					{
 						this._list.push( repeatItem );
 					}
@@ -53,7 +53,7 @@ export namespace OBD2
 				}
 				else
 				{
-					if ( !this._list.indexOf( repeatItem ) > -1 )
+					if ( ! ( this._list.indexOf( repeatItem ) >= 0 ) )
 					{
 						this._list.push( repeatItem );
 					}

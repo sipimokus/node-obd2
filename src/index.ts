@@ -27,20 +27,20 @@ export namespace OBD2
 {
 	export class Main extends events.EventEmitter
 	{
-		public DTC		: OBD2.Core.DTC;
-		public PID		: OBD2.Core.PID;
-		public OBD		: OBD2.Core.OBD;
-		public Repeat	: OBD2.Core.Repeater;
-		public Device	: OBD2.Device.Main;
+		public DTC		: _dtc.OBD2.Core.DTC;
+		public PID		: _pid.OBD2.Core.PID;
+		public OBD		: _obd.OBD2.Core.OBD;
+		public Repeat	: _repeat.OBD2.Core.Repeater;
+		public Device	: _device.OBD2.Device.Main;
 		public Serial	: OBD2_SerialInterface;
 
 		_options : any;
 
 		public constructor( options : any )
 		{
-			debug("Initializing");
-
 			super();
+
+			debug("Initializing");
 
 			this._options = options;
 
