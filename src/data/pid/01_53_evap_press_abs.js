@@ -2,11 +2,11 @@ module.exports =
 {
     mode:   "01",
     pid:    "53",
-    name:   "absevapsys_vappress",
+    name:   "evap_abs",
     description: "Absolute Evap system Vapor Pressure",
 
     min:    0,
-    max:    327675,
+    max:    327.675,
     unit:   "kPa",
 
     bytes:  2,

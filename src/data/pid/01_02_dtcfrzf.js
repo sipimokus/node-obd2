@@ -11,8 +11,8 @@ module.exports =
 
     polling : false,
 
-    bytes:  4,
-    convertToUseful: function( byteA, byteB, byteC, byteD )
+    bytes:  2,
+    convertToUseful: function( byteA, byteB )
     {
         return parseInt( byteA, 2);
     }
