@@ -23,7 +23,7 @@ export namespace OBD2
 				E: 1
 			};
 
-			constructor()
+			constructor( fakePort? : string, fakeOptions? : any )
 			{
 				super();
 
