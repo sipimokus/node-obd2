@@ -4,10 +4,9 @@
   "description": "Communication and data parsing with OBD-II connector, ELM327.",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && set DEBUG=OBD2* && node index.js",
-    "test": "npm run build && set NODE_ENV=debug && set DEBUG=OBD2*,-OBD2.Serial.* && node test.js",
+    "start": "set NODE_ENV=debug && set DEBUG=OBD2*,-OBD2.Serial.* && node test.js",
     "build": "node bin/build",
-    "test-off": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter spec test"
   },
   "repository": {
     "type": "git",
@@ -24,12 +23,15 @@
     "pwm",
     "kwp",
     "vpw",
+    "pid",
     "at",
     "serial",
     "bluetooth",
+    "usb",
     "car",
     "vehicle",
-    "diagnostic"
+    "diagnostic",
+    "diagnostics"
   ],
   "author": "Bence Sipos <sipimokus@gmail.com>",
   "license": "MIT",
@@ -42,6 +44,7 @@
   },
   "devDependencies": {
     "debug": "^2.2.0",
+    "mocha": "^2.4.5",
     "tsd": "^0.6.5"
   }
 }

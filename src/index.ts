@@ -76,6 +76,7 @@ export namespace OBD2
 
 			this.Serial.on("data", ( data, port ) =>
 			{
+				console.log("data.Serial", data);
 				this.OBD.parseDataStream( data, ( type, mess, obdData ) =>
 				{
 					this.emit( "data", mess, obdData );

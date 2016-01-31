@@ -52,9 +52,11 @@ export namespace OBD2
 				if( arrayOfCommands.length < 2 )
 				{
 					this._dataReceived = arrayOfCommands[0];
+					console.log("this._dataReceived", this._dataReceived);
 				}
 				else
 				{
+					console.log("data._dataReceived", this._dataReceived);
 					for ( let commandNumber = 0; commandNumber < arrayOfCommands.length; commandNumber++ )
 					{
 						forString = arrayOfCommands[commandNumber];
