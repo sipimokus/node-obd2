@@ -1,82 +1,32 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
-let SerialPort	= (require('../core/fakeserial')).OBD2.Core.FakeSerial;
-import events	= require('events');
+let SerialPort : any	= (require('../core/fakeserial')).OBD2.Core.FakeSerial;
+
+import events		= require('events');
+import baseSerial	= require('./base');
 
 export namespace OBD2
 {
 	export namespace Serial
 	{
-		export class Fake extends events.EventEmitter implements OBD2_SerialInterface
+		export class Fake
+		extends baseSerial.OBD2.Serial.Base//, events.EventEmitter
 		{
-			options : any;
-			port : string;
-			Serial : any;
-
-			constructor()
+			/**
+			 * Constructor
+			 *
+			 * @param port
+			 * @param options
+			 */
+			constructor( port : string, options? : any )
 			{
 				super();
-			}
 
-			connect( port : string, options? : any )
-			{
-				this.port    = port;
-				this.options = options;
-				this.Serial  = new SerialPort( this.port, this.options );
-				//this.Serial = new (require('../../fakeserial'))();
-				//this.Serial = new (require('../core/fakeserial'))();
-
-				this._eventHandler();
-
-				this.emit( 'ready' );
-			}
-
-
-			disconnect()
-			{
-				this.Serial.close();
-			}
-
-			write( data : string ) : void
-			{
-				try
-				{
-					this.Serial.write( data );
-				}
-				catch (err)
-				{
-					console.log('Error while writing: ' + err);
-					//debug('OBD-II Listeners deactivated, connection is probably lost.');
-				}
-			}
-
-			read()
-			{
-
-			}
-
-			private _eventHandler()
-			{
-				this.Serial.on( 'open', () =>
-				{
-					this.emit( 'open', this.port );
-				});
-
-				this.Serial.on( 'close', () =>
-				{
-					this.emit( 'close', this.port );
-				});
-
-				this.Serial.on( 'error', ( error ) =>
-				{
-					this.emit( 'close' );
-					this.emit( 'error', error, this.port );
-				});
-
-				this.Serial.on( 'data', ( data ) =>
-				{
-					this.emit( 'data', data, this.port );
-				});
+				this.setPort( port );
+				this.setOptions( options );
+				this.setSerial(
+					new SerialPort( port, options, false )
+				);
 
 			}
 

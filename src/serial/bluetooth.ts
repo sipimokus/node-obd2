@@ -6,6 +6,10 @@ export namespace OBD2
 	{
 		export class Bluetooth implements OBD2_SerialInterface
 		{
+			constructor( port : string, options? : any )
+			{
+
+			}
 
 		}
 

@@ -25,7 +25,7 @@ export namespace OBD2
 				debug("Ready")
 			}
 
-			public connect( Serial : OBD2_SerialInterface, cb ? : any )
+			public connect( Serial : any, cb ? : any )
 			{
 				debug("Connecting");
 
@@ -38,7 +38,7 @@ export namespace OBD2
 				});
 			}
 
-			public disconnect( Serial : OBD2_SerialInterface )
+			public disconnect( Serial : any )
 			{
 
 			}

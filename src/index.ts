@@ -3,20 +3,21 @@
 /// <reference path="core/dtc.ts"/>
 /// <reference path="core/pid.ts"/>
 /// <reference path="core/obd.ts"/>
-/// <reference path="core/repeater.ts"/>
+/// <reference path="core/ticker.ts"/>
+/// <reference path="device/index.ts"/>
 /// <reference path="serial/index.ts"/>
 
 import _dtc		= require('./core/dtc');
 import _pid		= require('./core/pid');
 import _obd		= require('./core/obd');
-import _repeat	= require('./core/repeater');
+import _ticker	= require('./core/ticker');
 import _device	= require('./device/index');
 import _serial	= require('./serial/index');
 
 const  DTC		= _dtc.OBD2.Core.DTC;
 const  PID		= _pid.OBD2.Core.PID;
 const  OBD		= _obd.OBD2.Core.OBD;
-const  Repeat	= _repeat.OBD2.Core.Repeater;
+const  Ticker	= _ticker.OBD2.Core.Ticker;
 const  Device	= _device.OBD2.Device.Main;
 const  Serial	= _serial.OBD2.Serial.Main;
 
@@ -30,7 +31,7 @@ export namespace OBD2
 		public DTC		: _dtc.OBD2.Core.DTC;
 		public PID		: _pid.OBD2.Core.PID;
 		public OBD		: _obd.OBD2.Core.OBD;
-		public Repeat	: _repeat.OBD2.Core.Repeater;
+		public Ticker	: _ticker.OBD2.Core.Ticker;
 		public Device	: _device.OBD2.Device.Main;
 		public Serial	: OBD2_SerialInterface;
 
@@ -47,173 +48,271 @@ export namespace OBD2
 			this.DTC	= new DTC();
 			this.PID	= new PID();
 			this.OBD	= new OBD( this.PID.getList() );
-			this.Repeat	= new Repeat( this._options.delay );
+			this.Ticker	= new Ticker( this._options.delay );
 			this.Device = new Device( this._options.device );
-			this.Serial = new Serial( this._options.serial );
-
-			debug("Ready");
-		}
-
-		public start = ( cb : any ) =>
-		{
-			this.Serial.connect( this._options.port,
+			this.Serial = new Serial( this._options.serial, this._options.port,
 			{
 				baudrate: this._options.baud
 			});
 
-			this.Serial.on("open", ( port ) =>
+			debug("Ready");
+		}
+
+		public start( callBack : any )
+		{
+			/*this.Serial.onData( ( data ) =>
 			{
-				this.Device.connect( this.Serial, () =>
+				console.log("data1", data);
+			});*/
+
+			this.Serial.on( "data", ( data ) =>
+			{
+				this.OBD.parseDataStream( data, ( type, mess ) =>
 				{
-					this._initListPID( cb );
+					this.emit( type, mess, data );
+					this.emit("dataParsed", type, mess, data);
 				});
+
+				this.emit("dataReceived", data);
+
 			});
 
-			this.Serial.on("close", ( port ) =>
+			this.Serial.connect( () =>
 			{
-				this.Device.disconnect( this.Serial );
+				this.Device.connect( this, () =>
+				{
+
+
+					/*this.Serial.getSerial().on("data", ( data ) =>
+					{
+						console.log("data2", data);
+					});*/
+
+					callBack();
+				});
+
 			});
 
-			this.Serial.on("data", ( data, port ) =>
+		}
+
+		public sendAT( atCommand : string )
+		{
+			this.Ticker.addItem( "AT", atCommand, false, ( next ) =>
 			{
-				console.log("data.Serial", data);
-				this.OBD.parseDataStream( data, ( type, mess, obdData ) =>
+				this.Serial.drain( atCommand + '\r' );
+				this.once("dataReceived", ( data ) =>
 				{
-					this.emit( "data", mess, obdData );
-					this.emit(  type , mess, obdData );
+					next();
 				});
+
+			});
+
+		}
+
+		public listPID = ( callBack : any ) : void =>
+		{
+			var pidSupportList = ["00","20","40","60","80","A0","C0"];
+
+			this._tickListPID( pidSupportList, (a) =>
+			{
+				callBack( this.PID.getListECU() );
 			});
 		};
 
-		public listPID()
+		private _tickListPID( pidList : any, callBack : any ) : void
 		{
-			return this.PID.getListECU();
-		}
-
-		public  _initListPID_Timer;
-		public  _initListPID = ( cb ) =>
-		{
-			var syncOnDataFunc, syncOnData;
-
-			var pidSupportList = ["00","20","40","60","80","A0","C0"];
-			var counter = 0;
-
-			this.Repeat.pause();
-
-			this.sendPID( pidSupportList[ counter ], "01" );
-
-			var cleanUp = () =>
+			if ( pidList.length <= 0 )
 			{
-				this.Serial.removeListener('data', syncOnDataFunc);
+				callBack();
+			}
 
-				delete syncOnData;
-				delete syncOnDataFunc;
+			let cmdPid = pidList.shift();
 
-				this.Repeat.start();
+			if ( this.PID.getListECU().length > 0 && this.PID.getListECU().indexOf( cmdPid ) < 0 )
+			{
+				callBack();
+			}
 
-				if ( this._initListPID_Timer !== null )
+			this.sendPID( cmdPid, "01", (mess, data) =>
+			{
+				if ( this.PID._loadPidEcuList( mess.name, mess.value ) )
 				{
-					clearTimeout(this._initListPID_Timer);
-					this._initListPID_Timer = null;
-
-					cb();
+					this._tickListPID( pidList, callBack );
 				}
 				else
 				{
-					clearTimeout(this._initListPID_Timer);
-					this._initListPID_Timer = null;
+					callBack();
+				}
+			});
+
+		}
+
+
+		/**
+		 * Writing PID
+		 *
+		 * @param replies
+		 * @param loop
+		 * @param pidNumber
+		 * @param pidMode
+		 * @param callBack
+		 */
+		public writePID = ( replies : string, loop : boolean, pidNumber : string, pidMode? : string, callBack? : any ) : void =>
+		{
+			// Arguments
+			if ( typeof pidMode === "function" )
+			{
+				callBack = pidMode;
+				pidMode  = "01";
+			}
+			else
+			{
+				pidMode = !pidMode ? "01" : pidMode;
+			}
+
+			// Vars
+			let pidData  : any 	 = this.PID.getByPid( pidNumber, pidMode );
+			let sendData : string = "";
+				replies = !replies ? "" : replies;
+
+			// PID defined?
+			if ( pidData )
+			{
+				// MODE + PID + (send/read)
+				if ( pidData.pid !== "undefined" )
+				{
+					sendData = pidData.mode + pidData.pid + replies + '\r';
 				}
 
-			};
-
-			syncOnDataFunc = ( data ) =>
-			{
-				this.OBD.parseDataStream(data, ( type, mess ) =>
+				// Only mode send ( ex. DTC )
+				else
 				{
-					if ( type == "pid" && typeof mess.name !== "undefined" && typeof mess.value !== "undefined" )
+					sendData = pidData.mode + replies + '\r';
+				}
+
+			}
+
+			// Undefined PID
+			else
+			{
+				sendData = pidMode + pidNumber + replies + '\r' ;
+			}
+
+			// Add Ticker
+			this.Ticker.addItem( "PID", sendData, !!loop, ( next, elem ) =>
+			{
+				// Timeout var for auto cleaning
+				var itemSkip : any;
+
+				// Send data
+				if ( elem.fail % 20 == 0 )
+				{
+					this.Serial.drain( sendData );
+				}
+
+				// Detected parsed PID data
+				this.once("pid", ( mess, data ) =>
+				{
+					if ( typeof callBack === "function" )
 					{
-						this.PID._loadPidEcuList( mess.name, mess.value );
+						callBack( mess, data );
 					}
 
-					this._initListPID_Timer = setTimeout(cleanUp, 10000);
+					clearTimeout( itemSkip );
+					itemSkip = null;
+
+					next();
 				});
 
-				counter++;
 
-				if ( counter  >= pidSupportList.length )
+
+				// Timeout timer
+				itemSkip = setTimeout(()=>
 				{
-					cleanUp();
+					// Fail to remove
+					elem.fail++;
+
+					// Auto remover, 60 loop wait, 4 sending try
+					if ( this._options.cleaner && elem.fail > 60 )
+					{
+						this.Ticker.delItem( "PID", sendData );
+					}
+
+					next();
+
+				}, this._options.delay );
+
+
+/*
+				// Direct callBack
+				if ( typeof callBack === "function" )
+				{
+					// Detected parsed PID data
+					this.once("pid", ( mess, data ) =>
+					{
+						callBack( mess, data );
+
+						clearTimeout( itemSkip );
+						delete itemSkip;
+
+						next();
+					});
 				}
+
+				// Without direct callback
 				else
 				{
-					this.sendPID( pidSupportList[ counter ], "01" );
-				}
-			};
+					// Auto remover, 100 loop wait
+					if ( this._options.cleaner )
+					{
+						// Timeout timer
+						itemSkip = setTimeout(()=>
+						{
+							// Fail to remove
+							elem.fail++;
+							console.log(elem.data, elem.fail);
+							if ( elem.fail == 100 )
+							{
+								this.Ticker.delItem( "PID", sendData );
+							}
 
-			syncOnData = this.Serial.on("data", syncOnDataFunc);
+							next();
+
+						}, this._options.delay );
+					}
+
+					// Next Tick
+					next();
+				}
+*/
+			});
 
 		};
 
-		public readPID( pidNumber : string, pidMode? : string )
+		/**
+		 * Sending PID code
+		 *
+		 * @param pidNumber
+		 * @param pidMode
+		 * @param callBack
+		 */
+		public sendPID = ( pidNumber : string, pidMode? : string, callBack? : any ) : void =>
 		{
-			pidMode = !pidMode ? "01" : pidMode;
+			this.writePID( null, false, pidNumber, pidMode, callBack );
+		};
 
-			let pidData : any = this.PID.getByPid( pidNumber, pidMode );
-			if ( pidData )
-			{
-				if ( pidData.pid !== "undefined" )
-				{
-					this.Serial.write( pidData.mode + pidData.pid + "1" + '\r' );
-				}
-				//There are modes which don't require a extra parameter ID.
-				else
-				{
-					this.Serial.write( pidData.mode + "1" + '\r' );
-				}
 
-			}
-			else
-			{
-				this.Serial.write( pidMode + pidNumber + "1" + '\r' );
-			}
-
-		}
-
-		public sendPID( pidNumber : string, pidMode? : string )
+		/**
+		 * Reading PID code
+		 *
+		 * @param pidNumber
+		 * @param pidMode
+		 * @param callBack
+		 */
+		public readPID = ( pidNumber : string, pidMode? : string, callBack? : any ) : void =>
 		{
-
-			pidMode = !pidMode ? "01" : pidMode;
-
-			let pidData : any = this.PID.getByPid( pidNumber, pidMode );
-			if ( pidData )
-			{
-				if ( pidData.pid !== "undefined" )
-				{
-					this.Serial.write( pidData.mode + pidData.pid + '\r' );
-				}
-				//There are modes which don't require a extra parameter ID.
-				else
-				{
-					this.Serial.write( pidData.mode + '\r' );
-				}
-
-			}
-			else
-			{
-				this.Serial.write( pidMode + pidNumber + '\r' );
-			}
-
-		}
-
-		/*public writePid( data : any, pidNumber : string, pidMode? : string )
-		{
-			pidMode = !pidMode ? "01" : pidMode;
-		}*/
-
-		public write( data : any )
-		{
-
-		}
+			this.writePID( "1", true, pidNumber, pidMode, callBack );
+		};
 
 	}
 }

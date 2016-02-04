@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        html{
+            height: 100%;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: 13px Helvetica, Arial; }
+        form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+        #messages { list-style-type: none; margin: 0; padding: 0; }
+        #messages li { padding: 5px 10px;background: black; color: white }
+        #messages li:nth-child(odd) {  }
+
+        body {
+            height: 100%;
+            background: black;
+            position: relative;
+        }
+        #textarea_id {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 240px;
+            overflow: scroll;
+        }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//cdn.jsdelivr.net/raphael/2.1.2/raphael-min.js"></script>
+    <script src="//cdn.jsdelivr.net/justgage/1.0.1/justgage.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+        $(document).ready(function ()
+        {
+            var g,g2;
+            var socket = io();
+
+            socket.on('obd2', function( type, elem, data )
+            {
+                var msg = "[" + type + "][" + data + "] : " + JSON.stringify(elem);
+                $('#messages').append($('<li>').text(msg));
+                $('#textarea_id').scrollTop($('#textarea_id')[0].scrollHeight);
+            });
+
+            socket.on('pid', function( msg )
+            {
+                if ( msg.name == "rpm" )
+                {
+                    if ( !g )
+                    {
+                        g = new JustGage({
+                            id: "gauge-rpm",
+                            value: 0,
+                            min: parseInt(msg.min),
+                            max: parseInt(msg.max / 2),
+                            title: "RPM"
+                        });
+                        console.log(msg);
+                    }
+
+                    g.refresh(parseInt(msg.value));
+                }
+            });
+
+            socket.on('vss', function( msg )
+            {
+
+                if ( !g2 )
+                {
+                    g2 = new JustGage({
+                        id: "gauge-vss",
+                        value: 67,
+                        min: parseInt(msg.min),
+                        max: parseInt(msg.max),
+                        title: "VSS"
+                    });
+                    console.log(msg);
+                }
+
+                g2.refresh(parseInt(msg.value));
+
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+<div id="textarea_id">
+<ul id="messages"></ul>
+</div>
+<div id="gauge-rpm" class="200x160px"></div>
+<div id="gauge-vss" class="200x160px"></div>
+
+<!--
+<ul id="messages"></ul>
+<form action="">
+    <input id="m" autocomplete="off" /><button type="submit">Send</button>
+</form>
+-->
+</body>
+</html>

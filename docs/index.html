@@ -1,0 +1,1651 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>obd2</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script src="assets/js/modernizr.js"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">obd2</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> obd2</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="node-obd2">node-obd2</h1>
+				<p>Communication and data parsing with OBD-II connect, ELM327.</p>
+				<h2 id="warning">WARNING</h2>
+				<p>Alpha package, does not suggested for stable use!<br>Stable version 1.x soon.</p>
+				<h4 id="mode-and-pid-support">MODE and PID Support</h4>
+				<table>
+					<thead>
+						<tr>
+							<th>MODE</th>
+							<th>PID</th>
+							<th>Byte</th>
+							<th>Description</th>
+							<th>Min</th>
+							<th>Max</th>
+							<th>Unit</th>
+							<th>Slug name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>01</td>
+							<td>00</td>
+							<td>4</td>
+							<td>PIDs supported 00-20</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>pidsupp0</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>01</td>
+							<td>4</td>
+							<td>Monitor status since DTCs cleared</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>dtc_cnt</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>02</td>
+							<td>2</td>
+							<td>DTC that caused required freeze frame data storage</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>dtcfrzf</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>03</td>
+							<td>2</td>
+							<td>Fuel system 1 and 2 status</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>fuelsys</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>04</td>
+							<td>1</td>
+							<td>Calculated LOAD Value</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>load_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>05</td>
+							<td>1</td>
+							<td>Engine Coolant Temperature</td>
+							<td>-40</td>
+							<td>215</td>
+							<td>°C</td>
+							<td>temp</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>06</td>
+							<td>1</td>
+							<td>Short Term Fuel Trim - Bank 1,3</td>
+							<td>-100</td>
+							<td>99.22</td>
+							<td>%</td>
+							<td>shrtft13</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>07</td>
+							<td>1</td>
+							<td>Long Term Fuel Trim - Bank 1,3</td>
+							<td>-100</td>
+							<td>99.22</td>
+							<td>%</td>
+							<td>longft13</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>08</td>
+							<td>1</td>
+							<td>Short Term Fuel Trim - Bank 2,4</td>
+							<td>-100</td>
+							<td>99.22</td>
+							<td>%</td>
+							<td>shrtft24</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>09</td>
+							<td>1</td>
+							<td>Long Term Fuel Trim - Bank 2,4</td>
+							<td>-100</td>
+							<td>99.22</td>
+							<td>%</td>
+							<td>longft24</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>0A</td>
+							<td>1</td>
+							<td>Fuel Rail Pressure (gauge)</td>
+							<td>0</td>
+							<td>765</td>
+							<td>kPa</td>
+							<td>frp</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>0B</td>
+							<td>1</td>
+							<td>Intake Manifold Absolute Pressure</td>
+							<td>0</td>
+							<td>255</td>
+							<td>kPa</td>
+							<td>map</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>0C</td>
+							<td>2</td>
+							<td>Engine RPM</td>
+							<td>0</td>
+							<td>16383.75</td>
+							<td>r/m</td>
+							<td>rpm</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>0D</td>
+							<td>1</td>
+							<td>Vehicle Speed Sensor</td>
+							<td>0</td>
+							<td>255</td>
+							<td>km/h</td>
+							<td>vss</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>0E</td>
+							<td>1</td>
+							<td>Ignition Timing Advance for #1 Cylinder</td>
+							<td>-64</td>
+							<td>63.5</td>
+							<td>°</td>
+							<td>sparkadv</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>0F</td>
+							<td>1</td>
+							<td>Intake Air Temperature</td>
+							<td>-40</td>
+							<td>215</td>
+							<td>°C</td>
+							<td>iat</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>10</td>
+							<td>2</td>
+							<td>Air Flow Rate from Mass Air Flow Sensor</td>
+							<td>0</td>
+							<td>655.35</td>
+							<td>g/s</td>
+							<td>maf</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>11</td>
+							<td>1</td>
+							<td>Absolute Throttle Position</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>throttlepos</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>12</td>
+							<td>1</td>
+							<td>Commanded Secondary Air Status</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>air_stat</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>13</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>14</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>15</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>16</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>17</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>18</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>19</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>1A</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>1B</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>1C</td>
+							<td>1</td>
+							<td>OBD requirements to which vehicle is designed</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>obdsup</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>1D</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>1E</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>1F</td>
+							<td>2</td>
+							<td>Time Since Engine Start</td>
+							<td>0</td>
+							<td>65535</td>
+							<td>sec</td>
+							<td>runtm</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>20</td>
+							<td>4</td>
+							<td>PIDs supported 21-40</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>pidsupp2</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>21</td>
+							<td>2</td>
+							<td>Distance Travelled While MIL is Activated</td>
+							<td>0</td>
+							<td>65535</td>
+							<td>km</td>
+							<td>mil_dist</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>22</td>
+							<td>2</td>
+							<td>Fuel Rail Pressure relative to manifold vacuum</td>
+							<td>0</td>
+							<td>5177.265</td>
+							<td>kPa</td>
+							<td>frpm</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>23</td>
+							<td>2</td>
+							<td>Fuel Rail Pressure (diesel)</td>
+							<td>0</td>
+							<td>655350</td>
+							<td>kPa</td>
+							<td>frpd</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>24</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>25</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>26</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>27</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>28</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>29</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>2A</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>2B</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>2C</td>
+							<td>1</td>
+							<td>Commanded EGR</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>edr_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>2D</td>
+							<td>1</td>
+							<td>EGR Error</td>
+							<td>-100</td>
+							<td>99.2</td>
+							<td>%</td>
+							<td>egr_err</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>2E</td>
+							<td>1</td>
+							<td>Commanded Evaporative Purge</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>eavp_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>2F</td>
+							<td>1</td>
+							<td>Fuel Level Input</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>fuellevel</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>30</td>
+							<td>1</td>
+							<td>Number of warm-ups since diagnostic trouble codes cleared</td>
+							<td>0</td>
+							<td>255</td>
+							<td>pcs</td>
+							<td>warm_ups</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>31</td>
+							<td>2</td>
+							<td>Distance since diagnostic trouble codes cleared</td>
+							<td>0</td>
+							<td>65535</td>
+							<td>km</td>
+							<td>clr_dist</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>32</td>
+							<td>2</td>
+							<td>Evap System Vapour Pressure</td>
+							<td>-8192</td>
+							<td>8192</td>
+							<td>Pa</td>
+							<td>evap_vp</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>33</td>
+							<td>1</td>
+							<td>Barometric Pressure</td>
+							<td>0</td>
+							<td>255</td>
+							<td>kPa</td>
+							<td>baro</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>34</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>35</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>36</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>37</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>38</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>39</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>3A</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>3B</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>3C</td>
+							<td>2</td>
+							<td>Catalyst Temperature Bank 1 / Sensor 1</td>
+							<td>-40</td>
+							<td>6513.5</td>
+							<td>°C</td>
+							<td>catemp11</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>3D</td>
+							<td>2</td>
+							<td>Catalyst Temperature Bank 2 / Sensor 1</td>
+							<td>-41</td>
+							<td>6513.6</td>
+							<td>°C</td>
+							<td>catemp21</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>3E</td>
+							<td>2</td>
+							<td>Catalyst Temperature Bank 1 / Sensor 2</td>
+							<td>-42</td>
+							<td>6513.7</td>
+							<td>°C</td>
+							<td>catemp12</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>3F</td>
+							<td>2</td>
+							<td>Catalyst Temperature Bank 2 / Sensor 2</td>
+							<td>-43</td>
+							<td>6513.8</td>
+							<td>°C</td>
+							<td>catemp22</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>40</td>
+							<td>4</td>
+							<td>PIDs supported 41-60</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>pidsupp4</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>41</td>
+							<td>4</td>
+							<td>Monitor status this driving cycle</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>monitorstatus</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>42</td>
+							<td>2</td>
+							<td>Control module voltage</td>
+							<td>0</td>
+							<td>65535</td>
+							<td>V</td>
+							<td>vpwr</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>43</td>
+							<td>2</td>
+							<td>Absolute Load Value</td>
+							<td>0</td>
+							<td>25700</td>
+							<td>%</td>
+							<td>load_abs</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>44</td>
+							<td>2</td>
+							<td>Fuel/air Commanded Equivalence Ratio</td>
+							<td>0</td>
+							<td>2</td>
+							<td>(ratio)</td>
+							<td>lambda</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>45</td>
+							<td>1</td>
+							<td>Relative Throttle Position</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>throttlerel</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>46</td>
+							<td>1</td>
+							<td>Ambient air temperature</td>
+							<td>-40</td>
+							<td>215</td>
+							<td>°C</td>
+							<td>ambient</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>47</td>
+							<td>1</td>
+							<td>Absolute Throttle Position B</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>throttleposb</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>48</td>
+							<td>1</td>
+							<td>Absolute Throttle Position C</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>throttleposc</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>49</td>
+							<td>1</td>
+							<td>Accelerator Pedal Position D</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>accpedald</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>4A</td>
+							<td>1</td>
+							<td>Accelerator Pedal Position E</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>accpedale</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>4B</td>
+							<td>1</td>
+							<td>Accelerator Pedal Position F</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>accpedalf</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>4C</td>
+							<td>1</td>
+							<td>Commanded Throttle Actuator Control</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>tac_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>4D</td>
+							<td>2</td>
+							<td>Time run by the engine while MIL activated</td>
+							<td>0</td>
+							<td>65525</td>
+							<td>min</td>
+							<td>mil_time</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>4E</td>
+							<td>2</td>
+							<td>Time since diagnostic trouble codes cleared</td>
+							<td>0</td>
+							<td>65525</td>
+							<td>min</td>
+							<td>clr_time</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>4F</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>50</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>51</td>
+							<td>1</td>
+							<td>Fuel Type</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>fuel_type</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>52</td>
+							<td>1</td>
+							<td>Ethanol fuel %</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>alch_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>53</td>
+							<td>2</td>
+							<td>Absolute Evap system Vapor Pressure</td>
+							<td>0</td>
+							<td>327.675</td>
+							<td>kPa</td>
+							<td>evap_press_abs</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>54</td>
+							<td>2</td>
+							<td>Evap system vapor pressure</td>
+							<td>-32767</td>
+							<td>32768</td>
+							<td>Pa</td>
+							<td>evap_press</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>55</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>56</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>57</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>58</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>59</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>5A</td>
+							<td>1</td>
+							<td>Relative accelerator pedal position</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>accpedal_pos</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>5B</td>
+							<td>1</td>
+							<td>Hybrid battery pack remaining life</td>
+							<td>0</td>
+							<td>100</td>
+							<td>%</td>
+							<td>hybridbatt</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>5C</td>
+							<td>1</td>
+							<td>Engine oil temperature</td>
+							<td>-40</td>
+							<td>210</td>
+							<td>°C</td>
+							<td>oiltemp</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>5D</td>
+							<td>2</td>
+							<td>Fuel injection timing</td>
+							<td>-210.00</td>
+							<td>301.992</td>
+							<td>°</td>
+							<td>fuelinjection</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>5E</td>
+							<td>2</td>
+							<td>Engine fuel rate</td>
+							<td>0</td>
+							<td>3212.75</td>
+							<td>L/h</td>
+							<td>fuelrate</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>5F</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>60</td>
+							<td>4</td>
+							<td>PIDs supported 61-80</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>pidsupp6</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>61</td>
+							<td>1</td>
+							<td>Driver&#39;s demand engine percent torque</td>
+							<td>-125</td>
+							<td>125</td>
+							<td>%</td>
+							<td>demand_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>62</td>
+							<td>1</td>
+							<td>Actual engine percent torque</td>
+							<td>-125</td>
+							<td>125</td>
+							<td>%</td>
+							<td>torque_pct</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>63</td>
+							<td>2</td>
+							<td>Engine reference torque</td>
+							<td>0</td>
+							<td>65535</td>
+							<td>Nm</td>
+							<td>torque</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>64</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>65</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>66</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>67</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>68</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>69</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>6A</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>6B</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>6C</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>6D</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>6E</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>6F</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>70</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>71</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>72</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>73</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>74</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>75</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>76</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>77</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>78</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>79</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>7A</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>7B</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>7C</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>7D</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>7E</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>7F</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>80</td>
+							<td>4</td>
+							<td>PIDs supported 81-A0</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>pidsupp8</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>81</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>82</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>83</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>84</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>85</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>86</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>87</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>A0</td>
+							<td>4</td>
+							<td>PIDs supported A1-C0</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>pidsuppa</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>C0</td>
+							<td>4</td>
+							<td>PIDs supported C1-E0</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>pidsuppc</td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>C3</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>01</td>
+							<td>C4</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>03</td>
+							<td></td>
+							<td>6</td>
+							<td>Requested DTC</td>
+							<td></td>
+							<td></td>
+							<td>BIT</td>
+							<td>requestdtc</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>04</td>
+							<td></td>
+							<td></td>
+							<td>Clear Trouble Codes (Clear engine light)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>cleardtc</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_dtc_.html">"core/dtc"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_fakeserial_.html">"core/fakeserial"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_obd_.html">"core/obd"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_pid_.html">"core/pid"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_ticker_.html">"core/ticker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_device_elm327_index_.html">"device/elm327/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_device_index_.html">"device/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_index_.html">"index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_serial_base_.html">"serial/base"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_serial_bluetooth_.html">"serial/bluetooth"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_serial_fake_.html">"serial/fake"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_serial_index_.html">"serial/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_serial_usb_.html">"serial/usb"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

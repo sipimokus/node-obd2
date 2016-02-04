@@ -14,7 +14,17 @@ var OBD = new obd2({
 OBD.start(function( car )
 {
     console.log("TEST START, OBD READY");
+    OBD.sendPID("00", "00");
+
+    /*OBD._initListPID(function(){
+     console.log("PIDSUPP");
+     console.log(OBD.listPID());
+     });*/
     //console.log( OBD.PID.getList() );
+
+
+
+
     //debug(OBD.listPID());
 
     /*setInterval(()=>{
@@ -23,10 +33,8 @@ OBD.start(function( car )
 */
 
     //OBD.sendPID("00", "01");
-    OBD._initListPID(function(){
-        console.log("PIDSUPP");
-        console.log(OBD.listPID());
-    });
+
+
 
     //OBD.Repeat.stop();
     //OBD.Repeat.start();
@@ -49,7 +57,7 @@ OBD.start(function( car )
     // PID commands
     OBD.on("pid", function( value, data )
     {
-        //debug(value);
+        debug("PID: ", value);
     });
 
     // DCT commands

@@ -5,11 +5,14 @@
   "path": "src/typings",
   "bundle": "src/typings/tsd.d.ts",
   "installed": {
-    "node/node.d.ts": {
-      "commit": "3d2f9971a107e2eee2de3ec5318f5c54071e16ed"
-    },
     "debug/debug.d.ts": {
-      "commit": "3d2f9971a107e2eee2de3ec5318f5c54071e16ed"
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "node/node.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
     }
   }
 }

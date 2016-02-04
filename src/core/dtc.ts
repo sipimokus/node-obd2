@@ -15,12 +15,12 @@ export namespace OBD2
 
 			constructor()
 			{
-				this._loadPidList();
+				this._loadDtcList();
 
 				debug("Ready");
 			}
 
-			private _loadPidList = () =>
+			private _loadDtcList = () =>
 			{
 				debug("Loading list");
 

@@ -14,6 +14,9 @@ export namespace OBD2
 			list	: any = [];
 			listEcu : any = [];
 
+			/**
+			 * Constructor
+			 */
 			constructor()
 			{
 				this._loadPidList();
@@ -21,6 +24,12 @@ export namespace OBD2
 				debug("Ready");
 			}
 
+
+			/**
+			 * Loading PID details from data directory
+			 *
+			 * @private
+			 */
 			private _loadPidList = () =>
 			{
 				debug("Loading list");
@@ -48,7 +57,16 @@ export namespace OBD2
 				debug("Loaded count: " + this.list.length);
 			};
 
-			public _loadPidEcuList = ( returnType, returnValue ) =>
+
+			/**
+			 * PID support command parser, and appender
+			 *
+			 * @param returnType
+			 * @param returnValue
+			 * @returns {boolean}
+			 * @private
+			 */
+			public _loadPidEcuList = ( returnType, returnValue ) : boolean =>
 			{
 				let decodeList =
 				{
@@ -83,7 +101,8 @@ export namespace OBD2
 
 				var hexNum;
 				var defNum = 0;
-				var tmpPid  : string = '';
+				var tmpPid : string = '';
+				let tmpFind: boolean = false;
 
 				// pidsupp0, pidsupp2, ...
 				if ( typeof pidCommands[ returnType ] == "undefined" )
@@ -121,13 +140,24 @@ export namespace OBD2
 
 							// Push supperted PID
 							this.listEcu.push( tmpPid );
+							tmpFind = true;
 
 						}
 					}
 				}
 
+				return tmpFind;
+
 			};
 
+
+			/**
+			 * Converting DEC to HEX number
+			 *
+			 * @param number
+			 * @returns {String|any}
+			 * @private
+			 */
 			private _dec2hex = ( number ) : string =>
 			{
 				if (number < 0)
@@ -143,12 +173,25 @@ export namespace OBD2
 				return number;
 			};
 
+
+			/**
+			 * Converting HEX to DEC number
+			 *
+			 * @param number
+			 * @returns {number}
+			 * @private
+			 */
 			private _hex2dec = ( number ) : number =>
 			{
 				return parseInt( number , 16);
 			};
 
 
+			/**
+			 * Get supported ECU PID list
+			 *
+			 * @returns {any}
+			 */
 			public getListECU()
 			{
 				return this.listEcu.filter( ( value, index, self ) =>
@@ -157,11 +200,24 @@ export namespace OBD2
 				});
 			}
 
+
+			/**
+			 * Get PID details list
+			 *
+			 * @returns {any}
+			 */
 			public getList = () =>
 			{
 				return this.list;
 			};
 
+
+			/**
+			 * Get PID details by name/slug
+			 *
+			 * @param slug
+			 * @returns {any}
+			 */
 			public getByName = ( slug : string ) =>
 			{
 				for( let index in this.list )
@@ -182,6 +238,14 @@ export namespace OBD2
 				return null;
 			};
 
+
+			/**
+			 * Get PID details by pid/mode
+			 *
+			 * @param pid
+			 * @param mode
+			 * @returns {any}
+			 */
 			public getByPid = ( pid : string, mode? : string ) =>
 			{
 				mode = !mode ? "09" : mode;

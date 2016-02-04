@@ -4,13 +4,14 @@
   "description": "Communication and data parsing with OBD-II connector, ELM327.",
   "main": "index.js",
   "scripts": {
-    "start": "set NODE_ENV=debug && set DEBUG=OBD2*,-OBD2.Serial.* && node test.js",
+    "start": "node example/server.js",
     "build": "node bin/build",
-    "test": "mocha --reporter spec test"
+    "docs" : "typedoc --module commonjs --target ES5 --out ./docs/ ./src/",
+    "test" : "mocha --reporter spec test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sipimokus/node-obd2.git"
+    "url" : "git+https://github.com/sipimokus/node-obd2.git"
   },
   "keywords": [
     "obd",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "debug": "^2.2.0",
     "mocha": "^2.4.5",
-    "tsd": "^0.6.5"
+    "tsd": "^0.6.5",
+    "typedoc": "^0.3.12"
   }
 }

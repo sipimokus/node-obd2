@@ -1,3 +1,6 @@
+var actTest = 1;
+var incTest = true;
+
 module.exports =
 {
     mode:   "01",
@@ -16,6 +19,23 @@ module.exports =
     },
     testResponse: function( emulator )
     {
-        return 40;
+        if ( actTest*actTest >= 64000 || actTest <= 0 )
+        {
+            incTest = !incTest;
+        }
+
+
+        if ( incTest )
+        {
+            actTest++;
+        }
+        else
+        {
+            actTest--;
+        }
+
+        //actTest++;
+
+        return parseInt( 1000 + actTest*actTest );
     }
 };

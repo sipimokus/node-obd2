@@ -1,5 +1,17 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
+interface IReplyParseCommand
+{
+	value : string,
+	name  : string,
+	mode  : string,
+	pid   : string,
+	min	  : number,
+	max	  : number,
+	unit  : string,
+}
+
+
 let fs		= require('fs');
 let path	= require('path');
 
@@ -14,6 +26,7 @@ export namespace OBD2
 			_pidsList  		: any	 = [];
 			_dataReceived 	: string = "";
 			_deviceCommands : any = [
+				"?",
 				"OK",
 				"SEARCHING",
 				"SEARCHING...",
@@ -38,6 +51,13 @@ export namespace OBD2
 
 			}
 
+
+			/**
+			 * Parse Serial data stream to PID details
+			 *
+			 * @param data
+			 * @param cb
+			 */
 			public parseDataStream( data : any, cb : any )
 			{
 				var currentString, forString, indexOfEnd, arrayOfCommands;
@@ -52,11 +72,15 @@ export namespace OBD2
 				if( arrayOfCommands.length < 2 )
 				{
 					this._dataReceived = arrayOfCommands[0];
-					console.log("this._dataReceived", this._dataReceived);
+
+					if ( this._deviceCommands.indexOf(this._dataReceived.split('\r')[0]) > -1 )
+					{
+						cb("ecu", arrayOfCommands, this._dataReceived);
+						this._dataReceived = "";
+					}
 				}
 				else
 				{
-					console.log("data._dataReceived", this._dataReceived);
 					for ( let commandNumber = 0; commandNumber < arrayOfCommands.length; commandNumber++ )
 					{
 						forString = arrayOfCommands[commandNumber];
@@ -124,11 +148,14 @@ export namespace OBD2
 			 */
 			public parseCommand( hexString : string )
 			{
-				var reply = {
+				var reply : IReplyParseCommand = {
 						value : null,
 						name  : null,
+						mode  : null,
 						pid   : null,
-						mode  : null
+						min	  : null,
+						max	  : null,
+						unit  : null,
 					},
 					byteNumber,
 					valueArray; //New object
@@ -161,6 +188,9 @@ export namespace OBD2
 							var numberOfBytes = this._pidsList[i].bytes;
 
 							reply.name  = this._pidsList[i].name;
+							reply.min   = this._pidsList[i].min;
+							reply.max   = this._pidsList[i].max;
+							reply.unit  = this._pidsList[i].unit;
 
 							// Use static parameter (performance up, usually)
 							switch ( numberOfBytes )

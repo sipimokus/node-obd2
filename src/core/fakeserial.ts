@@ -1,3 +1,10 @@
+/**
+ * OBD protocol emulated serial port
+ *
+ * Source and inspiring:
+ * https://github.com/matejkramny/nodejs-obd-parser
+ *
+ */
 /// <reference path="../typings/tsd.d.ts"/>
 
 let 		util = require('util');
@@ -17,21 +24,57 @@ export namespace OBD2
 	{
 		export class FakeSerial extends events.EventEmitter
 		{
+			private opened : boolean = false;
+
 			private modes =
 			{
 				L: 1,
 				E: 1
 			};
 
-			constructor( fakePort? : string, fakeOptions? : any )
+			constructor( fakePort? : string, fakeOptions? : any, openImmediately? : boolean )
 			{
 				super();
 
-				process.nextTick( () =>
+				if ( openImmediately === true || typeof openImmediately === "undefined" )
+				{
+					process.nextTick( () =>
+					{
+						this.emit('open');
+						this.opened = true;
+					});
+				}
+
+			}
+
+			public open( cb )
+			{
+				if ( !this.opened )
 				{
 					this.emit('open');
-				});
+					this.opened = true;
+				}
+
+				cb();
+
 			}
+
+			public close( cb )
+			{
+				if ( this.opened )
+				{
+					this.emit('close');
+					this.opened = false;
+				}
+
+				cb();
+
+			}
+
+			public isOpen = () =>
+			{
+				return this.opened;
+			};
 
 			public writeNext = ( data : any ) =>
 			{
@@ -39,6 +82,11 @@ export namespace OBD2
 				{
 					this.emit('data', data + "\r\r");
 				});
+			};
+
+			public drain = ( data : any ) =>
+			{
+				this.write( data );
 			};
 
 			public write = ( data : any ) =>
@@ -73,8 +121,8 @@ export namespace OBD2
 					return;
 				}
 
-				//if (data == "0100" || data == "0120" || data == "0140" || data == "0160" || data == "0180" || data == "01A0" || data == "01C0")
-				if (data == "0100" || data == "0120")
+				if (data == "0100" || data == "0120" || data == "0140" || data == "0160" || data == "0180" || data == "01A0" || data == "01C0")
+				//if (data == "0100" || data == "0120")
 				{
 					return this.findSupportedPins(data);
 				}
@@ -97,7 +145,7 @@ export namespace OBD2
 								res = '0' + res;
 							}
 
-							return this.writeNext('>41' + cmd + '' + res);
+							return this.writeNext( ('>41' + cmd + '' + res).toUpperCase() );
 						}
 					}
 				}
@@ -120,10 +168,12 @@ export namespace OBD2
 					[ 0,  0,  0,  0,  0,  0,  0,  0],
 					//  19, 1A, 1B, 1C, 1D, 1E, 1F, 20
 					[ 0,  0,  0,  0,  0,  0,  0,  0],
+					[ 0,  0,  0,  0,  0,  0,  0,  0],
 				];
 
 				if (data == "0100")
 				{
+					pins[3][0] = 1;
 					pins[1][3] = 1;
 					pins[1][4] = 1;
 					pins[1][5] = 1;
@@ -131,9 +181,17 @@ export namespace OBD2
 				}
 				if (data == "0120")
 				{
-					pins[0][1] = 1;
+					pins[3][0] = 1;
 				}
-				if (data == "0140" || data == "0160" || data == "0180" || data == "01A0" || data == "01C0")
+				if (data == "0140")
+				{
+					pins[3][0] = 1;
+				}
+				if (data == "0160")
+				{
+					//pins[3][0] = 1;
+				}
+				if ( data == "0180" || data == "01A0" || data == "01C0")
 				{
 					return this.writeNext('NO DATA');
 				}
