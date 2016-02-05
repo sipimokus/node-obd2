@@ -3,9 +3,9 @@
 /// <reference path="fake.ts"/>
 /// <reference path="usb.ts"/>
 
-import _bluetooth  = require("./bluetooth");
-import _fakeserial = require("./fake");
-import _usbserial  = require("./usb");
+import _blueTooth  = require("./bluetooth");
+import _fakeSerial = require("./fake");
+import _usbSerial  = require("./usb");
 
 var debug = require("debug")("OBD2.Serial.Main");
 
@@ -58,21 +58,21 @@ export namespace OBD2
 					case 'bt':
 					case 'bluetooth':
 
-						return new _bluetooth.OBD2.Serial.Bluetooth( port, options );
+						return new _blueTooth.OBD2.Serial.Bluetooth( port, options );
 
 						break;
 
 					case 'fake':
 					case 'fakeserial':
 
-						return new _fakeserial.OBD2.Serial.Fake( port, options );
+						return new _fakeSerial.OBD2.Serial.Fake( port, options );
 
 						break;
 
 					case 'usb':
 					case 'serial':
 
-						return new _usbserial.OBD2.Serial.Usb( port, options );
+						return new _usbSerial.OBD2.Serial.Usb( port, options );
 
 						break;
 				}

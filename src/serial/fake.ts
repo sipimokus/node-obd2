@@ -2,7 +2,6 @@
 
 let SerialPort : any	= (require('../core/fakeserial')).OBD2.Core.FakeSerial;
 
-import events		= require('events');
 import baseSerial	= require('./base');
 
 export namespace OBD2
@@ -10,7 +9,7 @@ export namespace OBD2
 	export namespace Serial
 	{
 		export class Fake
-		extends baseSerial.OBD2.Serial.Base//, events.EventEmitter
+		extends baseSerial.OBD2.Serial.Base
 		{
 			/**
 			 * Constructor

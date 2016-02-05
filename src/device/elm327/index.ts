@@ -8,7 +8,7 @@ export namespace OBD2
 	{
 		export class ELM327
 		{
-			public connect = ( Serial : any, cb : any ) =>
+			public connect = ( Serial : any, callBack : any ) =>
 			{
 				// Set all to Defaults
 				Serial.sendAT("AT D");
@@ -38,7 +38,7 @@ export namespace OBD2
 				Serial.sendAT("AT SP0");
 
 				// CallBack
-				setTimeout( cb, 1000 );
+				callBack();
 			};
 
 			public disconnect()
@@ -46,15 +46,6 @@ export namespace OBD2
 
 			}
 
-			public cmdWrite()
-			{
-
-			}
-
-			public cmdRead()
-			{
-
-			}
 		}
 
 	}

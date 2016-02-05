@@ -1,8 +1,8 @@
-//process.env.NODE_ENV   = "debug";
-//process.env.DEBUG      = "Example,OBD2.*";
+process.env.NODE_ENV   = "debug";
+process.env.DEBUG      = "Example,OBD2.*";
 
-process.env.NODE_ENV   = "production";
-process.env.DEBUG      = false;
+//process.env.NODE_ENV   = "production";
+//process.env.DEBUG      = false;
 
 var obd2 = require("../index");
 var OBD = new obd2({

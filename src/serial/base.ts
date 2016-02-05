@@ -3,7 +3,6 @@
 import 		events	= require('events');
 
 var debug = require("debug")("OBD2.Serial.Base");
-//var debug = console.log;
 
 export namespace OBD2
 {

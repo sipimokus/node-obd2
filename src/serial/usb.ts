@@ -1,7 +1,6 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
 let SerialPort : any	= require('serialport').SerialPort;
-import 		events	= require('events');
 import baseSerial	= require('./base');
 
 export namespace OBD2
@@ -9,7 +8,7 @@ export namespace OBD2
 	export namespace Serial
 	{
 		export class Usb
-		extends baseSerial.OBD2.Serial.Base//, events.EventEmitter
+		extends baseSerial.OBD2.Serial.Base
 		{
 			/**
 			 * Constructor
