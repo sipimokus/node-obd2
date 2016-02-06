@@ -22,7 +22,7 @@ const  Device	= _device.OBD2.Device.Main;
 const  Serial	= _serial.OBD2.Serial.Main;
 
 import events	= require('events');
-const  debug 	= require("debug")("OBD2.Main");
+const  debug 	: debug.IDebug = require("debug")("OBD2.Main");
 
 export namespace OBD2
 {

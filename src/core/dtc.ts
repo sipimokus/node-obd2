@@ -20,11 +20,14 @@ export namespace OBD2
 				debug("Ready");
 			}
 
-			private _loadDtcList = () =>
+			private _loadDtcList = ( basePath? : string ) =>
 			{
 				debug("Loading list");
 
-				let basePath = path.join( __dirname, "..", "data", "dtc" );
+				basePath = basePath
+					? basePath
+					: path.join( __dirname, "..", "data", "dtc" )
+				;
 
 				try
 				{

@@ -11,12 +11,31 @@ export namespace OBD2
 	{
 		export class PID
 		{
-			list	: any = [];
-			listEcu : any = [];
-			pidEcuList : any = [];
+			/**
+			 * Loaded data PID list
+			 *
+			 * @type {Array}
+			 */
+			listPid		: any = [];
+
+			/**
+			 * Supported ECU list
+			 *
+			 * @type {Array}
+			 */
+			listEcu 	: any = [];
+
+			/**
+			 * Real ECU+DATA supported PID list
+			 *
+			 * @type {Array}
+			 */
+			pidEcuList 	: any = [];
 
 			/**
 			 * Constructor
+			 *
+			 * @test Obd2CorePidTest
 			 */
 			constructor()
 			{
@@ -29,13 +48,19 @@ export namespace OBD2
 			/**
 			 * Loading PID details from data directory
 			 *
+			 * @param basePath
 			 * @private
+			 *
+			 * @test Obd2CorePidTest
 			 */
-			private _loadPidList = () =>
+			private _loadPidList = ( basePath? : string ) =>
 			{
 				debug("Loading list");
 
-				let basePath = path.join( __dirname, "..", "data", "pid" );
+				basePath = basePath
+					? basePath
+					: path.join( __dirname, "..", "data", "pid" )
+				;
 
 				try
 				{
@@ -45,7 +70,7 @@ export namespace OBD2
 						{
 							let tmpPidObject = require( path.join( basePath, file ) );
 
-							this.list.push( tmpPidObject );
+							this.listPid.push( tmpPidObject );
 
 						});
 					}
@@ -55,7 +80,7 @@ export namespace OBD2
 					debug("[ERROR] Data directory not found!");
 				}
 
-				debug("Loaded count: " + this.list.length);
+				debug("Loaded count: " + this.listPid.length);
 			};
 
 
@@ -66,8 +91,10 @@ export namespace OBD2
 			 * @param returnValue
 			 * @returns {boolean}
 			 * @private
+			 *
+			 * @test Obd2CorePidTest
 			 */
-			public _loadPidEcuList = ( returnType, returnValue ) : boolean =>
+			public _loadPidEcuList = ( returnType : string, returnValue : string ) : boolean =>
 			{
 				let decodeList =
 				{
@@ -147,6 +174,12 @@ export namespace OBD2
 					}
 				}
 
+				// Clean array
+				this.listEcu = this.listEcu.filter( ( value, index, self ) =>
+				{
+					return self.indexOf( value ) === index;
+				});
+
 				return tmpFind;
 
 			};
@@ -155,76 +188,78 @@ export namespace OBD2
 			/**
 			 * Converting DEC to HEX number
 			 *
-			 * @param number
-			 * @returns {String|any}
+			 * @param decNumber
+			 * @returns {string}
 			 * @private
+			 *
+			 * @test Obd2CorePidTest
 			 */
-			private _dec2hex = ( number ) : string =>
+			private _dec2hex = ( decNumber : number ) : string =>
 			{
-				if (number < 0)
+				let hexNumber : string;
+
+				if ( decNumber < 0 )
 				{
-					number = 0xFFFFFFFF + number + 1;
+					decNumber = 0xFFFFFFFF + decNumber + 1;
 				}
 
-				number = String( number.toString(16).toUpperCase() );
+				hexNumber = String( decNumber.toString(16).toUpperCase() );
 
-				if ( number.length === 1 )
-					number = '0' + number;
+				if ( hexNumber.length === 1 )
+				{
+					hexNumber = '0' + hexNumber;
+				}
 
-				return number;
+				return hexNumber;
 			};
 
 
 			/**
 			 * Converting HEX to DEC number
 			 *
-			 * @param number
+			 * @param hexNumber
 			 * @returns {number}
 			 * @private
+			 *
+			 * @test Obd2CorePidTest
 			 */
-			private _hex2dec = ( number ) : number =>
+			private _hex2dec = ( hexNumber : string ) : number =>
 			{
-				return parseInt( number , 16);
+				return parseInt( hexNumber , 16);
 			};
 
-			
+
+
 			/**
 			 * Get real supported ECU PID list
 			 *
 			 * @returns {any}
+			 *
+			 * @test Obd2CorePidTest
 			 */
-			public getListRealECU()
+			public getList()
 			{
 				if ( this.pidEcuList.length > 0 )
 				{
 					return this.pidEcuList;
 				}
 				
-				for ( let index in this.list )
+				for ( let index in this.listPid )
 				{
-					let temp = this.list[ index ].pid;
+					let temp = this.listPid[ index ].pid;
 
-					if ( this.getListECU().indexOf( temp ) > -1 )
+					if ( temp && temp.length == 2 && this.listEcu.indexOf( temp ) > -1 )
 					{
 						this.pidEcuList[ temp ] = temp;
 					}
 				}
-				console.log(this.getListECU(), this.pidEcuList);process.exit();
-				return this.pidEcuList;
-			}
-			
 
-			/**
-			 * Get supported ECU PID list
-			 *
-			 * @returns {any}
-			 */
-			public getListECU()
-			{
-				return this.listEcu.filter( ( value, index, self ) =>
+				this.pidEcuList = this.pidEcuList.filter( ( value, index, self ) =>
 				{
 					return self.indexOf( value ) === index;
 				});
+
+				return this.pidEcuList;
 			}
 
 
@@ -232,11 +267,26 @@ export namespace OBD2
 			 * Get PID details list
 			 *
 			 * @returns {any}
+			 *
+			 * @test Obd2CorePidTest
 			 */
-			public getList = () =>
+			public getListPID()
 			{
-				return this.list;
-			};
+				return this.listPid;
+			}
+
+
+			/**
+			 * Get supported ECU PID list
+			 *
+			 * @returns {any}
+			 *
+			 * @test Obd2CorePidTest
+			 */
+			public getListECU()
+			{
+				return this.listEcu;
+			}
 
 
 			/**
@@ -244,21 +294,23 @@ export namespace OBD2
 			 *
 			 * @param slug
 			 * @returns {any}
+			 *
+			 * @test Obd2CorePidTest
 			 */
 			public getByName = ( slug : string ) =>
 			{
-				for( let index in this.list )
+				for( let index in this.listPid )
 				{
 					if (
-						typeof this.list[ index ].name === "undefined"
+						typeof this.listPid[ index ].name === "undefined"
 					)
 					{
 						continue;
 					}
 
-					if ( this.list[ index ].name.toLowerCase() === slug.toLowerCase() )
+					if ( this.listPid[ index ].name.toLowerCase() === slug.toLowerCase() )
 					{
-						return this.list[ index ];
+						return this.listPid[ index ];
 					}
 				}
 
@@ -272,27 +324,29 @@ export namespace OBD2
 			 * @param pid
 			 * @param mode
 			 * @returns {any}
+			 *
+			 * @test Obd2CorePidTest
 			 */
 			public getByPid = ( pid : string, mode? : string ) =>
 			{
-				mode = !mode ? "09" : mode;
+				mode = !mode ? "01" : mode;
 
-				for( let index in this.list )
+				for( let index in this.listPid )
 				{
 					if (
-						typeof this.list[ index ].pid === "undefined"
-					 || typeof this.list[ index ].mode === "undefined"
+						typeof this.listPid[ index ].pid === "undefined"
+					 || typeof this.listPid[ index ].mode === "undefined"
 					)
 					{
 						continue;
 					}
 
 					if (
-						this.list[ index ].pid.toLowerCase()  === pid.toLowerCase()
-					 && this.list[ index ].mode.toLowerCase() === mode.toLowerCase()
+						this.listPid[ index ].pid.toLowerCase()  === pid.toLowerCase()
+					 && this.listPid[ index ].mode.toLowerCase() === mode.toLowerCase()
 					)
 					{
-						return this.list[ index ];
+						return this.listPid[ index ];
 					}
 				}
 
