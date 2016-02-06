@@ -174,14 +174,13 @@ export namespace OBD2
 					}
 				}
 
-				// Clean array
-				this.listEcu = this.listEcu.filter( ( value, index, self ) =>
+				// Clear array
+				return this.listEcu.filter( ( value, index, self ) =>
 				{
 					return self.indexOf( value ) === index;
 				});
 
 				return tmpFind;
-
 			};
 
 

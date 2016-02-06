@@ -47,7 +47,7 @@ export namespace OBD2
 
 			this.DTC	= new DTC();
 			this.PID	= new PID();
-			this.OBD	= new OBD( this.PID.getList() );
+			this.OBD	= new OBD( this.PID.getListPID() );
 			this.Ticker	= new Ticker( this._options.delay );
 			this.Device = new Device( this._options.device );
 			this.Serial = new Serial( this._options.serial, this._options.port,
@@ -147,7 +147,7 @@ export namespace OBD2
 				callBack();
 			}
 
-			this.sendPID( cmdPid, "01", (mess, data) =>
+			this.sendPID( cmdPid, "01", ( mess, data ) =>
 			{
 				if ( this.PID._loadPidEcuList( mess.name, mess.value ) )
 				{
