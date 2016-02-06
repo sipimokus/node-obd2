@@ -3,6 +3,7 @@
 import 		events	= require('events');
 
 var debug = require("debug")("OBD2.Serial.Base");
+//var debug = console.log;
 
 export namespace OBD2
 {
@@ -96,11 +97,11 @@ export namespace OBD2
 					try
 					{
 						this.emit("write", data);
-						this.Serial.drain( data, ( error ) =>
+						this.Serial.write( data, ( error ) =>
 						{
 							if ( typeof callBack === "function" )
 							{
-								callBack();
+								this.Serial.drain( callBack );
 							}
 						});
 					}
@@ -131,7 +132,10 @@ export namespace OBD2
 						this.emit("write", data);
 						this.Serial.write( data, ( error ) =>
 						{
-							callBack();
+							if ( typeof callBack === "function" )
+							{
+								callBack();
+							}
 						});
 					}
 					catch ( exceptionError )
