@@ -1,9 +1,40 @@
 # node-obd2
-Communication and data parsing with OBD-II connect, ELM327.
+Communication and data parsing with OBD-II connector.
+
+
+## INSTALLATION
+```
+$ npm install obd2 --save
+```
+
+
+## USAGE
+See sample files in "example" direction.
+Need for example project:
+```
+$ npm install express
+$ npm install socket.io
+```
+
 
 ## WARNING
-Alpha package, does not suggested for stable use!  
+Beta package, does not suggested for stable use!
 Stable version 1.x soon.
+
+
+## TESTS
+- Integrated "fake serial"
+- Usb connection ( ELM327 v1.4b )
+- Ford focus 2008 ( CAN 11 bit 500kb )
+- Bluetooth connection ( ELM327 v1.? )
+- Included example
+
+
+## ROADMAP
+- DTC read
+- DTC clear
+- FREEZE mode read
+
 
 #### MODE and PID Support
 | MODE | PID | Byte | Description                                               | Min     | Max      | Unit    | Slug name      |

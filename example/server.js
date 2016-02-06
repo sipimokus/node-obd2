@@ -42,24 +42,26 @@ http.listen(3000, function()
             io.emit('pid', data );
         });
 
-        //OBD.listPID( function( pidList )
-        //{
+/* Extra usage code
+        OBD.listPID(function( pidList )
+        {
             // io.emit list
-            //io.emit('pidList', pidList );
+            io.emit('pidList', pidList );
 
             // io.emit pid
-            //OBD.readPID( "0C" );
+            OBD.readPID( "0C" );
 
             // io.emit pid & vss
-            //OBD.readPID( "0D", function( data )
-            //{
-            //    io.emit('vss', data );
-            //});
+            OBD.readPID( "0D", function( data )
+            {
+                io.emit('vss', data );
+            });
 
             // Unavailable, auto clean
-            //OBD.readPID( "99" );
+            OBD.readPID( "99" );
 
-        //});
+        });
+*/
 
     });
 

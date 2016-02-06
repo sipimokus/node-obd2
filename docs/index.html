@@ -66,9 +66,31 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="node-obd2">node-obd2</h1>
-				<p>Communication and data parsing with OBD-II connect, ELM327.</p>
-				<h2 id="warning">WARNING</h2>
-				<p>Alpha package, does not suggested for stable use!<br>Stable version 1.x soon.</p>
+				<p>Communication and data parsing with OBD-II connector.</p>
+				<h2 id="installation">INSTALLATION</h2>
+				<pre><code>$ npm <span class="hljs-operator"><span class="hljs-keyword">install</span> obd2 <span class="hljs-comment">--save</span></span>
+</code></pre><h2 id="usage">USAGE</h2>
+				<p>See sample files in &quot;example&quot; direction.
+				Need for example project:</p>
+				<pre><code>$ npm <span class="hljs-keyword">install</span> express
+$ npm <span class="hljs-keyword">install</span> socket.io
+</code></pre><h2 id="warning">WARNING</h2>
+				<p>Beta package, does not suggested for stable use!
+				Stable version 1.x soon.</p>
+				<h2 id="tests">TESTS</h2>
+				<ul>
+					<li>Integrated &quot;fake serial&quot;</li>
+					<li>Usb connection ( ELM327 v1.4b )</li>
+					<li>Ford focus 2008 ( CAN 11 bit 500kb )</li>
+					<li>Bluetooth connection ( ELM327 v1.? )</li>
+					<li>Included example</li>
+				</ul>
+				<h2 id="roadmap">ROADMAP</h2>
+				<ul>
+					<li>DTC read</li>
+					<li>DTC clear</li>
+					<li>FREEZE mode read</li>
+				</ul>
 				<h4 id="mode-and-pid-support">MODE and PID Support</h4>
 				<table>
 					<thead>

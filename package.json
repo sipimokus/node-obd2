@@ -1,7 +1,7 @@
 {
   "name": "obd2",
-  "version": "0.0.3",
-  "description": "Communication and data parsing with OBD-II connector, ELM327.",
+  "version": "0.1.0",
+  "description": "Communication and data parsing with OBD-II connector.",
   "main": "index.js",
   "scripts": {
     "start": "node example/server.js",
