@@ -26,9 +26,12 @@ Stable version 1.x soon.
 - Integrated "fake serial"
 - Usb connection ( ELM327 v1.4b )
 - Ford focus 2008 ( CAN 11 bit 500kb )
-- Bluetooth connection ( ELM327 v1.? )
+- ~~Bluetooth connection ( ELM327 v1.? )~~
 - Included example
 
+
+## DOCUMENTATION
+[Source documentation here.](http://htmlpreview.github.io/?https://github.com/sipimokus/node-obd2/blob/master/docs/modules/_index_.html)
 
 ## ROADMAP
 - DTC read
