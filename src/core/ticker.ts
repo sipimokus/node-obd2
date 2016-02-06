@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
 let debug = require("debug")("OBD2.Core.Ticker");
 

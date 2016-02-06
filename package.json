@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node example/server.js",
+    "typings": "cd src && typings install",
     "build": "node bin/build",
-    "docs": "typedoc --module commonjs --target ES5 --out ./docs/ ./src/",
+    "docs": "typedoc --module commonjs --target ES5 --includeDeclarations --out ./docs/ ./src/",
     "test": "mocha --compilers ts:typescript-require --reporter spec test"
   },
   "repository": {
@@ -49,6 +50,7 @@
     "debug": "^2.2.0",
     "mocha": "^2.4.5",
     "tsd": "^0.6.5",
-    "typedoc": "^0.3.12"
+    "typedoc": "^0.3.12",
+    "typings": "^0.6.6"
   }
 }

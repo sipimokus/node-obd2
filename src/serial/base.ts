@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
 import 		events	= require('events');
 
@@ -11,7 +11,7 @@ export namespace OBD2
 	{
 		export class Base
 		extends events.EventEmitter
-		implements OBD2_SerialInterface
+		implements obd2.OBD2_SerialInterface
 		{
 			private Serial	: any;
 

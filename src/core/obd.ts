@@ -1,21 +1,9 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
-interface IReplyParseCommand
-{
-	value : string,
-	name  : string,
-	mode  : string,
-	pid   : string,
-	min	  : number,
-	max	  : number,
-	unit  : string,
-}
+import fs	= require('fs');
+import path	= require('path');
 
-
-let fs		= require('fs');
-let path	= require('path');
-
-let debug = require("debug")("OBD2.Core.OBD");
+let debug	: debug.IDebug = require("debug")("OBD2.Core.OBD");
 
 export namespace OBD2
 {
@@ -148,7 +136,7 @@ export namespace OBD2
 			 */
 			public parseCommand( hexString : string )
 			{
-				var reply : IReplyParseCommand = {
+				var reply : obd2.OBD2_IReplyParseCommand = {
 						value : null,
 						name  : null,
 						mode  : null,

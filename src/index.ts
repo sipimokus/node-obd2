@@ -1,4 +1,4 @@
-/// <reference path="typings/tsd.d.ts"/>
+/// <reference path="typings/main.d.ts"/>
 
 /// <reference path="core/dtc.ts"/>
 /// <reference path="core/pid.ts"/>
@@ -33,7 +33,7 @@ export namespace OBD2
 		public OBD		: _obd.OBD2.Core.OBD;
 		public Ticker	: _ticker.OBD2.Core.Ticker;
 		public Device	: _device.OBD2.Device.Main;
-		public Serial	: OBD2_SerialInterface;
+		public Serial	: obd2.OBD2_SerialInterface;
 
 		_options : any;
 
@@ -51,9 +51,9 @@ export namespace OBD2
 			this.Ticker	= new Ticker( this._options.delay );
 			this.Device = new Device( this._options.device );
 			this.Serial = new Serial( this._options.serial, this._options.port,
-			{
-				baudrate: this._options.baud
-			});
+				{
+					baudrate: this._options.baud
+				});
 
 			debug("Ready");
 		}
@@ -61,9 +61,9 @@ export namespace OBD2
 		public start( callBack : any )
 		{
 			/*this.Serial.onData( ( data ) =>
-			{
-				console.log("data1", data);
-			});*/
+			 {
+			 console.log("data1", data);
+			 });*/
 
 			this.Serial.on( "data", ( data ) =>
 			{
@@ -84,9 +84,9 @@ export namespace OBD2
 
 
 					/*this.Serial.getSerial().on("data", ( data ) =>
-					{
-						console.log("data2", data);
-					});*/
+					 {
+					 console.log("data2", data);
+					 });*/
 
 					callBack();
 				});
@@ -99,7 +99,7 @@ export namespace OBD2
 		{
 			//atCommand = atCommand.replace(/" "/g, "");
 			//atCommand = String(atCommand).replace(" ", "");
-			
+
 			this.Ticker.addItem( "AT", atCommand, false, ( next ) =>
 			{
 				this.Serial.drain( atCommand + '\r' );
@@ -107,7 +107,7 @@ export namespace OBD2
 				{
 					// Wait a bit
 					setTimeout( next, 100 );
- 				});
+				});
 
 			});
 
@@ -118,7 +118,7 @@ export namespace OBD2
 			var pidSupportList = ["00","20","40","60","80","A0","C0"];
 			var pidSupportReal = [];
 
-			
+
 			if ( this.PID.getListECU().length > 0 )
 			{
 				callBack( this.PID.getListECU() );
@@ -187,7 +187,7 @@ export namespace OBD2
 			// Vars
 			let pidData  : any 	 = this.PID.getByPid( pidNumber, pidMode );
 			let sendData : string = "";
-				replies = !replies ? "" : replies;
+			replies = !replies ? "" : replies;
 
 			// PID defined?
 			if ( pidData )
@@ -257,48 +257,48 @@ export namespace OBD2
 				}, this._options.delay );
 
 
-/*
-				// Direct callBack
-				if ( typeof callBack === "function" )
-				{
-					// Detected parsed PID data
-					this.once("pid", ( mess, data ) =>
-					{
-						callBack( mess, data );
+				/*
+				 // Direct callBack
+				 if ( typeof callBack === "function" )
+				 {
+				 // Detected parsed PID data
+				 this.once("pid", ( mess, data ) =>
+				 {
+				 callBack( mess, data );
 
-						clearTimeout( itemSkip );
-						delete itemSkip;
+				 clearTimeout( itemSkip );
+				 delete itemSkip;
 
-						next();
-					});
-				}
+				 next();
+				 });
+				 }
 
-				// Without direct callback
-				else
-				{
-					// Auto remover, 100 loop wait
-					if ( this._options.cleaner )
-					{
-						// Timeout timer
-						itemSkip = setTimeout(()=>
-						{
-							// Fail to remove
-							elem.fail++;
-							console.log(elem.data, elem.fail);
-							if ( elem.fail == 100 )
-							{
-								this.Ticker.delItem( "PID", sendData );
-							}
+				 // Without direct callback
+				 else
+				 {
+				 // Auto remover, 100 loop wait
+				 if ( this._options.cleaner )
+				 {
+				 // Timeout timer
+				 itemSkip = setTimeout(()=>
+				 {
+				 // Fail to remove
+				 elem.fail++;
+				 console.log(elem.data, elem.fail);
+				 if ( elem.fail == 100 )
+				 {
+				 this.Ticker.delItem( "PID", sendData );
+				 }
 
-							next();
+				 next();
 
-						}, this._options.delay );
-					}
+				 }, this._options.delay );
+				 }
 
-					// Next Tick
-					next();
-				}
-*/
+				 // Next Tick
+				 next();
+				 }
+				 */
 			});
 
 		};

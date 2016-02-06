@@ -1,9 +1,9 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
-let fs		= require('fs');
-let path	= require('path');
+import fs	= require('fs');
+import path	= require('path');
 
-let debug = require("debug")("OBD2.Core.DTC");
+let debug	: debug.IDebug = require("debug")("OBD2.Core.DTC");
 
 export namespace OBD2
 {

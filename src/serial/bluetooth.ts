@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
 let SerialPort : any	= require('serialport').SerialPort;
 import baseSerial	= require('./base');
