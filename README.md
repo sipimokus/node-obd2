@@ -175,8 +175,8 @@ Stable version 1.x soon.
 | 01   | 85  |      |                                                           |         |          |         |                |
 | 01   | 86  |      |                                                           |         |          |         |                |
 | 01   | 87  |      |                                                           |         |          |         |                |
-| 01   | A0  | 4    | PIDs supported A1-C0                                      |         |          |         | pidsuppa       |
-| 01   | C0  | 4    | PIDs supported C1-E0                                      |         |          |         | pidsuppc       |
+| 01   | A0  | 4    | PIDs supported A1-C0                                      |         |          | BIT     | pidsuppa       |
+| 01   | C0  | 4    | PIDs supported C1-E0                                      |         |          | BIT     | pidsuppc       |
 | 01   | C3  |      |                                                           |         |          |         |                |
 | 01   | C4  |      |                                                           |         |          |         |                |
 |      |     |      |                                                           |         |          |         |                |
