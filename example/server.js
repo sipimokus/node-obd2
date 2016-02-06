@@ -14,10 +14,13 @@ var OBD = new obd2({
     cleaner : true      // Automatic ticker list cleaner ( ex. PID not supported, no response )
 });
 
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var debug = require("debug")("Example");
+
+app.use('/assets', express.static( __dirname + '/assets') );
 
 // Server
 http.listen(3000, function()

@@ -36,18 +36,30 @@
             width: 25%;
             height: 70%;
         }
+        #gauges-container {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 75%;
+            height: 70%;
+            background: black;
+        }
+        .gauge-elem {
+            width: 200px;
+            height: 160px;
+            display: inline-block;
+        }
     </style>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="//cdn.jsdelivr.net/raphael/2.1.2/raphael-min.js"></script>
-    <script src="//cdn.jsdelivr.net/justgage/1.0.1/justgage.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/assets/raphael-2.1.4.min.js"></script>
+    <script src="/assets/justgage.js"></script>
+    <script src="/assets/jquery-2.2.0.min.js"></script>
     <script>
+        var gauges = [];
+        var socket = io();
 
         $(document).ready(function ()
         {
-            var g,g2;
-            var socket = io();
-
             socket.on('obd2', function( type, elem, data )
             {
                 var msg = "[" + type + "][" + data + "] : " + JSON.stringify(elem);
@@ -57,6 +69,39 @@
 
             socket.on('pid', function( msg )
             {
+                if ( typeof gauges[ msg.name ] !== "undefined" && gauges[ msg.name ] )
+                {
+                    if ( typeof gauges[ msg.name ].refresh === "function" )
+                    {
+                        gauges[ msg.name ].refresh( parseInt( msg.value ) );
+                    }
+                    else
+                    {
+                        gauges[ msg.name ] = null;
+                    }
+                }
+                else
+                {
+                    if ( $("#gauge-" + msg.name).length <= 0 )
+                    {
+                        $( "#gauges-container").append('<div id="gauge-'+ msg.name +'" class="gauge-elem 200x160px"></div>');
+                    }
+
+                    //if ( msg.min && msg.max )
+                    //{
+                        gauges[ msg.name ] = new JustGage({
+                            id: "gauge-" + msg.name,
+                            value: 0,
+                            min: parseInt(msg.min),
+                            max: parseInt(msg.max),
+                            title: msg.name + "\n" + msg.unit,
+
+                            valueFontColor : "#FFFFFF"
+                        });
+                    //}
+                }
+
+/*
                 if ( msg.name == "rpm" )
                 {
                     if ( !g )
@@ -90,6 +135,7 @@
 
                     g2.refresh(parseInt(msg.value));
                 }
+*/
 
             });
 
@@ -126,6 +172,9 @@
                     pidReadList[i] = $(selected).text();
                 });
 
+                $(".gauge-elem").remove();
+                gauges = [];
+
                 socket.emit("pidTickerList", pidReadList);
             });
 
@@ -137,8 +186,7 @@
 <div id="textarea_id">
 <ul id="messages"></ul>
 </div>
-<div id="gauge-rpm" class="200x160px"></div>
-<div id="gauge-vss" class="200x160px"></div>
+<div id="gauges-container"></div>
 <select id="pid-list" multiple></select>
 <!--
 <ul id="messages"></ul>
