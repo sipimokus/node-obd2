@@ -1,5 +1,5 @@
 # node-obd2
-Communication and data parsing with OBD-II connector.
+Vehicle communication and data parsing with OBD-II connector.
 
 
 ## INSTALLATION
