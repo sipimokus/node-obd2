@@ -31,7 +31,7 @@ Stable version 1.x soon.
 
 
 ## DOCUMENTATION
-[Source documentation here.](http://htmlpreview.github.io/?https://github.com/sipimokus/node-obd2/blob/master/docs/modules/_index_.html)
+[Source documentation find here.](https://rawgit.com/sipimokus/node-obd2/master/docs/modules/_index_.html)
 
 ## ROADMAP
 - DTC read
