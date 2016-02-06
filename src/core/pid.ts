@@ -245,11 +245,11 @@ export namespace OBD2
 				
 				for ( let index in this.listPid )
 				{
-					let temp = this.listPid[ index ].pid;
+					let temp = String( this.listPid[ index ].pid );
 
-					if ( temp && temp.length == 2 && this.listEcu.indexOf( temp ) > -1 )
+					if ( temp && this.listEcu.indexOf( temp ) > -1 )
 					{
-						this.pidEcuList[ temp ] = temp;
+						this.pidEcuList.push( temp );
 					}
 				}
 
