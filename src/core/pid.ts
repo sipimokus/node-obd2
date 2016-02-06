@@ -13,6 +13,7 @@ export namespace OBD2
 		{
 			list	: any = [];
 			listEcu : any = [];
+			pidEcuList : any = [];
 
 			/**
 			 * Constructor
@@ -186,6 +187,32 @@ export namespace OBD2
 				return parseInt( number , 16);
 			};
 
+			
+			/**
+			 * Get real supported ECU PID list
+			 *
+			 * @returns {any}
+			 */
+			public getListRealECU()
+			{
+				if ( this.pidEcuList.length > 0 )
+				{
+					return this.pidEcuList;
+				}
+				
+				for ( let index in this.list )
+				{
+					let temp = this.list[ index ].pid;
+
+					if ( this.getListECU().indexOf( temp ) > -1 )
+					{
+						this.pidEcuList[ temp ] = temp;
+					}
+				}
+				console.log(this.getListECU(), this.pidEcuList);process.exit();
+				return this.pidEcuList;
+			}
+			
 
 			/**
 			 * Get supported ECU PID list

@@ -97,13 +97,17 @@ export namespace OBD2
 
 		public sendAT( atCommand : string )
 		{
+			//atCommand = atCommand.replace(/" "/g, "");
+			//atCommand = String(atCommand).replace(" ", "");
+			
 			this.Ticker.addItem( "AT", atCommand, false, ( next ) =>
 			{
 				this.Serial.drain( atCommand + '\r' );
 				this.once("dataReceived", ( data ) =>
 				{
-					next();
-				});
+					// Wait a bit
+					setTimeout( next, 100 );
+ 				});
 
 			});
 
@@ -112,7 +116,9 @@ export namespace OBD2
 		public listPID = ( callBack : any ) : void =>
 		{
 			var pidSupportList = ["00","20","40","60","80","A0","C0"];
+			var pidSupportReal = [];
 
+			
 			if ( this.PID.getListECU().length > 0 )
 			{
 				callBack( this.PID.getListECU() );

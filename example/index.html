@@ -56,6 +56,7 @@
     <script src="/assets/jquery-2.2.0.min.js"></script>
     <script>
         var gauges = [];
+		var pidReadList = [];
         var socket = io();
 
         $(document).ready(function ()
@@ -63,17 +64,37 @@
             socket.on('obd2', function( type, elem, data )
             {
                 var msg = "[" + type + "][" + data + "] : " + JSON.stringify(elem);
+				
+				if ( type == "bug" )
+				{
+					console.log( data );
+				}
+				
                 $('#messages').append($('<li>').text(msg));
                 $('#textarea_id').scrollTop($('#textarea_id')[0].scrollHeight);
             });
 
             socket.on('pid', function( msg )
             {
+				if ( pidReadList.indexOf( msg.pid ) < 0 )
+				{
+					return;
+				}
+			
+				if ( msg.unit && msg.unit == "Bit Encoded" )
+				{
+					return;
+				}
+				//if ( ["00", "20", "40", "60", "80", "A0", "C0", "01", "02", "03", "12"].indexOf( msg.pid ) > -1 )
+				//{
+				//	return;
+				//}
+			
                 if ( typeof gauges[ msg.name ] !== "undefined" && gauges[ msg.name ] )
                 {
                     if ( typeof gauges[ msg.name ].refresh === "function" )
                     {
-                        gauges[ msg.name ].refresh( parseInt( msg.value ) );
+                        gauges[ msg.name ].refresh( parseFloat(msg.value) );
                     }
                     else
                     {
@@ -92,9 +113,10 @@
                         gauges[ msg.name ] = new JustGage({
                             id: "gauge-" + msg.name,
                             value: 0,
-                            min: parseInt(msg.min),
-                            max: parseInt(msg.max),
-                            title: msg.name + "\n" + msg.unit,
+							decimals : true,
+                            min: parseFloat(msg.min),
+                            max: parseFloat(msg.max),
+                            title: "[" + msg.pid + "]" + msg.name + "\n" + msg.unit,
 
                             valueFontColor : "#FFFFFF"
                         });
@@ -158,24 +180,35 @@
 
 
                 $.each(msg, function( index, text ) {
+					var tmpElem = $('<option></option>');
+					
+					if ( [
+						"00", "20", "40", "60", "80", "A0", "C0", "01", "02", "03", "12", "1C", "41", 
+						"13", "14", "15"
+					].indexOf( text ) > -1 )
+					{
+						tmpElem.attr("disabled", true);
+					}
+
+				
                     pidSelect.append(
-                        $('<option></option>').val( text ).html( text )
+                        tmpElem.val( text ).html( text )
                     );
                 });
             });
 
-            $( document).on("change", "#pid-list", function()
+            $( document).on("change click", "#pid-list", function()
             {
-                var pidReadList = [];
+				gauges = [];
+                $(".gauge-elem").remove();
+
+				pidReadList = [];
                 $(':selected', this).each(function(i, selected)
                 {
                     pidReadList[i] = $(selected).text();
                 });
 
-                $(".gauge-elem").remove();
-                gauges = [];
-
-                socket.emit("pidTickerList", pidReadList);
+				socket.emit("pidTickerList", pidReadList);                
             });
 
         });

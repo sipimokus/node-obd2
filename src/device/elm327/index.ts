@@ -16,12 +16,12 @@ export namespace OBD2
 				// Reset all
 				Serial.sendAT("AT Z");
 
-				//Turns off echo.
-				Serial.sendAT("AT E0");
-
 				//Turns off extra line feed and carriage return
 				Serial.sendAT("AT L0");
 
+				//Turns off echo.
+				Serial.sendAT("AT E0");
+				
 				//This disables spaces in in output, which is faster!
 				Serial.sendAT("AT S0");
 
