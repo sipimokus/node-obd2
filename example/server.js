@@ -39,21 +39,24 @@ http.listen(3000, function()
             io.emit('pid', data );
         });
 
-        OBD.listPID( function( pidList )
-        {
+        //OBD.listPID( function( pidList )
+        //{
+            // io.emit list
+            //io.emit('pidList', pidList );
+
             // io.emit pid
-            OBD.readPID( "0C" );
+            //OBD.readPID( "0C" );
 
             // io.emit pid & vss
-            OBD.readPID( "0D", function( data )
-            {
-                io.emit('vss', data );
-            });
+            //OBD.readPID( "0D", function( data )
+            //{
+            //    io.emit('vss', data );
+            //});
 
             // Unavailable, auto clean
-            OBD.readPID( "99" );
+            //OBD.readPID( "99" );
 
-        });
+        //});
 
     });
 
@@ -72,4 +75,29 @@ io.on('connection', function(socket)
     {
         debug('User disconnected');
     });
+
+    socket.on('pidTickerList', function( addList )
+    {
+        OBD.Ticker.stop();
+        for ( var index in addList )
+        {
+            OBD.readPID( addList[ index ] );
+        }
+    });
+
+    socket.on('pidList', function()
+    {
+        OBD.listPID( function( pidList )
+        {
+            io.emit('pidList', pidList );
+        })
+    });
+
+    OBD.listPID( function( pidList )
+    {
+        io.emit('pidList', pidList );
+    });
+
+
+
 });

@@ -113,10 +113,18 @@ export namespace OBD2
 		{
 			var pidSupportList = ["00","20","40","60","80","A0","C0"];
 
-			this._tickListPID( pidSupportList, (a) =>
+			if ( this.PID.getListECU().length > 0 )
 			{
 				callBack( this.PID.getListECU() );
-			});
+			}
+			else
+			{
+				this._tickListPID( pidSupportList, (a) =>
+				{
+					callBack( this.PID.getListECU() );
+				});
+			}
+
 		};
 
 		private _tickListPID( pidList : any, callBack : any ) : void

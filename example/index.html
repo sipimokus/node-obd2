@@ -28,6 +28,14 @@
             height: 240px;
             overflow: scroll;
         }
+        #pid-list
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 25%;
+            height: 70%;
+        }
     </style>
     <script src="/socket.io/socket.io.js"></script>
     <script src="//cdn.jsdelivr.net/raphael/2.1.2/raphael-min.js"></script>
@@ -65,25 +73,60 @@
 
                     g.refresh(parseInt(msg.value));
                 }
+
+                if ( msg.name == "vss" )
+                {
+                    if ( !g2 )
+                    {
+                        g2 = new JustGage({
+                            id: "gauge-vss",
+                            value: 67,
+                            min: parseInt(msg.min),
+                            max: parseInt(msg.max),
+                            title: "VSS"
+                        });
+                        console.log(msg);
+                    }
+
+                    g2.refresh(parseInt(msg.value));
+                }
+
             });
 
             socket.on('vss', function( msg )
             {
 
-                if ( !g2 )
+
+
+            });
+
+            socket.on("pidList", function( msg )
+            {
+                console.log( msg );
+                var pidSelect = $('#pid-list');
+
+                $(pidSelect)
+                        .find('option')
+                        .remove()
+                ;
+
+
+                $.each(msg, function( index, text ) {
+                    pidSelect.append(
+                        $('<option></option>').val( text ).html( text )
+                    );
+                });
+            });
+
+            $( document).on("change", "#pid-list", function()
+            {
+                var pidReadList = [];
+                $(':selected', this).each(function(i, selected)
                 {
-                    g2 = new JustGage({
-                        id: "gauge-vss",
-                        value: 67,
-                        min: parseInt(msg.min),
-                        max: parseInt(msg.max),
-                        title: "VSS"
-                    });
-                    console.log(msg);
-                }
+                    pidReadList[i] = $(selected).text();
+                });
 
-                g2.refresh(parseInt(msg.value));
-
+                socket.emit("pidTickerList", pidReadList);
             });
 
         });
@@ -96,7 +139,7 @@
 </div>
 <div id="gauge-rpm" class="200x160px"></div>
 <div id="gauge-vss" class="200x160px"></div>
-
+<select id="pid-list" multiple></select>
 <!--
 <ul id="messages"></ul>
 <form action="">

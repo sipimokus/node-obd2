@@ -84,9 +84,12 @@ export namespace OBD2
 				});
 			};
 
-			public drain = ( data : any ) =>
+			public drain = ( callBack : any ) =>
 			{
-				this.write( data );
+				if ( typeof callBack === "function" )
+				{
+					callBack();
+				}
 			};
 
 			public write = ( data : any ) =>

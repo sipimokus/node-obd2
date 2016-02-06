@@ -254,7 +254,7 @@ export namespace OBD2
 
 				this.Serial.on("data", ( data, port ) =>
 				{
-					data = data.replace(/(?:\r\n|\r|\n)/g, '');
+					data = String(data).replace(/(?:\r\n|\r|\n)/g, '');
 
 					this.emit("data", data);
 					debug("Serial port data : " +  data );
@@ -262,7 +262,7 @@ export namespace OBD2
 
 				this.on("write", ( data, port ) =>
 				{
-					data = data.replace(/(?:\r\n|\r|\n)/g, '');
+					data = String(data).replace(/(?:\r\n|\r|\n)/g, '');
 
 					debug("Serial port write: " +  data );
 				});
