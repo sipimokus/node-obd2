@@ -124,6 +124,11 @@ export namespace OBD2
 					return;
 				}
 
+				if ( data.substring( 0, 2 ) == "03" )
+				{
+					return this.writeNext( (">4301000A000000").toUpperCase() );
+				}
+
 				if ( data === "0100" || data === "0120" || data === "0140" || data === "0160" || data === "0180" || data === "01A0" || data === "01C0" )
 				//if (data === "0100" || data === "0120")
 				{

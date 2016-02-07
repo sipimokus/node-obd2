@@ -44,6 +44,11 @@ http.listen(3000, function()
             io.emit('pid', data );
         });
 
+        OBD.on("dtc", function( data )
+        {
+            io.emit('dtcList', data );
+        });
+
 /* Extra usage code
         OBD.listPID(function( pidList )
         {
@@ -97,17 +102,14 @@ io.on('connection', function(socket)
         OBD.listPID( function( pidList )
         {
             io.emit('pidList', pidList );
+            OBD.listDTC();
         });
-    });
-
-    socket.on('dctList', function()
-    {
-        OBD.listDCT();
     });
 
     OBD.listPID( function( pidList )
     {
         io.emit('pidList', pidList );
+        OBD.listDTC();
     });
 
 

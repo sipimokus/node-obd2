@@ -1,17 +1,16 @@
 module.exports =
 {
-    mode:   "03",
-    pid:    undefined,
-    name:   "requestdtc",
+    mode: "03",
+    pid: undefined,
+    name: "requestdtc",
     description: "Requested DTC",
 
-    bytes:  6,
-    convertToUseful: function( byteA, byteB, byteC, byteD, byteE, byteF )
+    bytes: 6,
+    convertToUseful: function (byteA, byteB, byteC, byteD, byteE, byteF)
     {
-        var reply = {};
-        reply.errors = [];
+        var reply = [];
 
-        var decodeDTCCode = function( byte1, byte2 ) {
+        var decodeDTCCode = function (byte1, byte2) {
             var codeString = "", firstChar;
 
             //If 00 00 --> No code.
@@ -21,7 +20,7 @@ module.exports =
 
             var firstByte = parseInt(byte1, 16);
             var firstCharBytes = firstByte >> 6;
-            switch(firstCharBytes) {
+            switch (firstCharBytes) {
                 case 0:
                     firstChar = 'P';
                     break;
@@ -44,9 +43,9 @@ module.exports =
             return codeString;
         };
 
-        reply.errors[0] = decodeDTCCode(byteA, byteB);
-        reply.errors[1] = decodeDTCCode(byteC, byteD);
-        reply.errors[2] = decodeDTCCode(byteE, byteF);
+        reply[0] = decodeDTCCode( byteA, byteB );
+        reply[1] = decodeDTCCode( byteC, byteD );
+        reply[2] = decodeDTCCode( byteE, byteF );
 
         return reply;
     }

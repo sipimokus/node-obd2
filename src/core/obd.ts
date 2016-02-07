@@ -95,7 +95,7 @@ export namespace OBD2
 								}
 								else if ( reply.mode === "43" )
 								{
-									cb( "dct", reply, messageString );
+									cb( "dtc", reply, messageString );
 								}
 
 							}

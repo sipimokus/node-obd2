@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Socket.IO chat</title>
+    <title>Socket.IO OBD2</title>
     <style>
         html{
             height: 100%;
@@ -36,6 +36,13 @@
             width: 25%;
             height: 70%;
         }
+        #dtc-list
+         {
+             position: absolute;
+             top: 60%;
+             width: 25%;
+             height: 10%;
+         }
         #gauges-container {
             position: absolute;
             right: 0;
@@ -61,6 +68,8 @@
 
         $(document).ready(function ()
         {
+            socket.emit("pidTickerList", []);
+
             socket.on('obd2', function( type, elem, data )
             {
                 var msg = "[" + type + "][" + data + "] : " + JSON.stringify(elem);
@@ -197,6 +206,25 @@
                 });
             });
 
+            socket.on("dtcList", function( msg )
+            {
+                var dtcSelect = $('#dtc-list');
+
+                $(dtcSelect)
+                        .find('option')
+                        .remove()
+                ;
+
+
+                $.each(msg.value, function( index, text ) {
+                    var tmpElem = $('<option></option>');
+
+                    dtcSelect.append(
+                            tmpElem.val( text ).html( text ).attr("disabled", true)
+                    );
+                });
+            });
+
             $( document).on("change click", "#pid-list", function()
             {
 				gauges = [];
@@ -221,6 +249,7 @@
 </div>
 <div id="gauges-container"></div>
 <select id="pid-list" multiple></select>
+<select id="dtc-list" multiple></select>
 <!--
 <ul id="messages"></ul>
 <form action="">
