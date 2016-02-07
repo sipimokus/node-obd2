@@ -1,6 +1,6 @@
 {
   "name": "obd2",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Vehicle communication and data parsing with OBD-II connector.",
   "main": "index.js",
   "scripts": {
