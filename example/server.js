@@ -32,6 +32,8 @@ http.listen(3000, function()
     {
         debug("OBD2 example start");
 
+        OBD.listDTC();
+
         OBD.on("dataParsed", function( type, elem, data )
         {
             io.emit('obd2', type, elem, data );
@@ -95,7 +97,12 @@ io.on('connection', function(socket)
         OBD.listPID( function( pidList )
         {
             io.emit('pidList', pidList );
-        })
+        });
+    });
+
+    socket.on('dctList', function()
+    {
+        OBD.listDCT();
     });
 
     OBD.listPID( function( pidList )

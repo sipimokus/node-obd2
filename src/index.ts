@@ -126,6 +126,12 @@ export namespace OBD2
 		}
 
 
+		public listDTC( callBack : any ) : void
+		{
+			this._tickListDTC( callBack );
+		}
+
+
 
 		/**
 		 * Writing PID
@@ -319,6 +325,29 @@ export namespace OBD2
 				{
 					callBack();
 				}
+			} );
+
+		}
+
+		private _tickListDTC( callBack : any ) : void
+		{
+			/*if ( this.PID.getListECU().length > 0 && this.PID.getListECU().indexOf( cmdPid ) < 0 )
+			{
+				callBack();
+			}*/
+
+			this.sendPID( "", "03", ( mess, data ) =>
+			{
+				//console.log(mess, data);
+				//process.exit();
+				/*if ( this.PID._loadPidEcuList( mess.name, mess.value ) )
+				{
+					this._tickListPID( dtcList, callBack );
+				}
+				else
+				{
+					callBack();
+				}*/
 			} );
 
 		}
