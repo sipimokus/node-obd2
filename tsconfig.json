@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": false,
+    "outDir": "lib/"
+  },
+  "exclude": [
+    "node_modules",
+    "src/typings/"
+  ],
+  "filesGlob": [
+    "src/**/*.ts"
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": { "rewriteTsconfig": false }
+}

@@ -7,12 +7,12 @@
 /// <reference path="device/index.ts"/>
 /// <reference path="serial/index.ts"/>
 
-import _dtc        = require("./core/dtc");
-import _pid        = require("./core/pid");
-import _obd        = require("./core/obd");
-import _ticker    = require("./core/ticker");
-import _device    = require("./device/index");
-import _serial    = require("./serial/index");
+import _dtc		= require("./core/dtc");
+import _pid		= require("./core/pid");
+import _obd		= require("./core/obd");
+import _ticker	= require("./core/ticker");
+import _device	= require("./device/index");
+import _serial	= require("./serial/index");
 
 const DTC    = _dtc.OBD2.Core.DTC;
 const PID    = _pid.OBD2.Core.PID;
@@ -35,7 +35,7 @@ export namespace OBD2
 		public Device : _device.OBD2.Device.Main;
 		public Serial : obd2.OBD2_SerialInterface;
 
-		_options : any;
+		private _options : obd2.OBD2_IOptions;
 
 		public constructor( options : any )
 		{
@@ -50,21 +50,15 @@ export namespace OBD2
 			this.OBD    = new OBD( this.PID.getListPID() );
 			this.Ticker = new Ticker( this._options.delay );
 			this.Device = new Device( this._options.device );
-			this.Serial = new Serial( this._options.serial, this._options.port,
-				{
-					baudrate : this._options.baud
-				} );
+			this.Serial = new Serial( this._options.serial, this._options.port, {
+				baudrate : this._options.baud
+			});
 
 			debug( "Ready" );
 		}
 
 		public start( callBack : any )
 		{
-			/*this.Serial.onData( ( data ) =>
-			 {
-			 console.log("data1", data);
-			 });*/
-
 			this.Serial.on( "data", ( data ) =>
 			{
 				this.OBD.parseDataStream( data, ( type, mess ) =>
@@ -113,9 +107,9 @@ export namespace OBD2
 
 		}
 
-		public listPID = ( callBack : any ) : void =>
+		public listPID( callBack : any ) : void
 		{
-			var pidSupportList = [ "00", "20", "40", "60", "80", "A0", "C0" ];
+			let pidSupportList = [ "00", "20", "40", "60", "80", "A0", "C0" ];
 
 			if ( this.PID.getList().length > 0 )
 			{
@@ -129,35 +123,8 @@ export namespace OBD2
 				} );
 			}
 
-		};
-
-		private _tickListPID( pidList : any, callBack : any ) : void
-		{
-			if ( pidList.length <= 0 )
-			{
-				callBack();
-			}
-
-			let cmdPid = pidList.shift();
-
-			if ( this.PID.getListECU().length > 0 && this.PID.getListECU().indexOf( cmdPid ) < 0 )
-			{
-				callBack();
-			}
-
-			this.sendPID( cmdPid, "01", ( mess, data ) =>
-			{
-				if ( this.PID._loadPidEcuList( mess.name, mess.value ) )
-				{
-					this._tickListPID( pidList, callBack );
-				}
-				else
-				{
-					callBack();
-				}
-			} );
-
 		}
+
 
 
 		/**
@@ -169,7 +136,7 @@ export namespace OBD2
 		 * @param pidMode
 		 * @param callBack
 		 */
-		public writePID = ( replies : string, loop : boolean, pidNumber : string, pidMode? : string, callBack? : any ) : void =>
+		public writePID( replies : string, loop : boolean, pidNumber : string, pidMode? : string, callBack? : any ) : void
 		{
 			// Arguments
 			if ( typeof pidMode === "function" )
@@ -213,8 +180,8 @@ export namespace OBD2
 			// Add Ticker
 			this.Ticker.addItem( "PID", sendData, !!loop, ( next, elem ) =>
 			{
-				// Timeout var for auto cleaning
-				var itemSkip : any;
+				// Timeout let for auto cleaning
+				let itemSkip : any;
 
 				// Send data
 				if ( elem.fail % 20 === 0 )
@@ -238,20 +205,23 @@ export namespace OBD2
 
 
 				// Timeout timer
-				itemSkip = setTimeout( ()=>
-				{
-					// Fail to remove
-					elem.fail++;
-
-					// Auto remover, 60 loop wait, 4 sending try
-					if ( this._options.cleaner && elem.fail > 60 )
+				itemSkip = setTimeout(
+					() =>
 					{
-						this.Ticker.delItem( "PID", sendData );
-					}
+						// Fail to remove
+						elem.fail++;
 
-					next();
+						// Auto remover, 60 loop wait, 4 sending try
+						if ( this._options.cleaner && elem.fail > 60 )
+						{
+							this.Ticker.delItem( "PID", sendData );
+						}
 
-				}, this._options.delay );
+						next();
+
+					},
+					this._options.delay
+				);
 
 
 				/*
@@ -307,10 +277,10 @@ export namespace OBD2
 		 * @param pidMode
 		 * @param callBack
 		 */
-		public sendPID = ( pidNumber : string, pidMode? : string, callBack? : any ) : void =>
+		public sendPID( pidNumber : string, pidMode? : string, callBack? : any ) : void
 		{
 			this.writePID( undefined, false, pidNumber, pidMode, callBack );
-		};
+		}
 
 
 		/**
@@ -320,10 +290,39 @@ export namespace OBD2
 		 * @param pidMode
 		 * @param callBack
 		 */
-		public readPID = ( pidNumber : string, pidMode? : string, callBack? : any ) : void =>
+		public readPID( pidNumber : string, pidMode? : string, callBack? : any ) : void
 		{
 			this.writePID( "1", true, pidNumber, pidMode, callBack );
-		};
+		}
+
+		private _tickListPID( pidList : any, callBack : any ) : void
+		{
+			if ( pidList.length <= 0 )
+			{
+				callBack();
+			}
+
+			let cmdPid = pidList.shift();
+
+			if ( this.PID.getListECU().length > 0 && this.PID.getListECU().indexOf( cmdPid ) < 0 )
+			{
+				callBack();
+			}
+
+			this.sendPID( cmdPid, "01", ( mess, data ) =>
+			{
+				if ( this.PID._loadPidEcuList( mess.name, mess.value ) )
+				{
+					this._tickListPID( pidList, callBack );
+				}
+				else
+				{
+					callBack();
+				}
+			} );
+
+		}
 
 	}
+
 }

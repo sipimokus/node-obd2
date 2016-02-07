@@ -20,7 +20,7 @@ export namespace OBD2
 				debug("Ready");
 			}
 
-			private _loadDtcList = ( basePath? : string ) =>
+			public _loadDtcList( basePath? : string )
 			{
 				debug("Loading list");
 
@@ -45,22 +45,22 @@ export namespace OBD2
 				}
 
 				debug("Loaded count: " + this.list.length);
-			};
+			}
 
-			public getList = () =>
+			public getList()
 			{
 				return this.list;
-			};
+			}
 
-			public getByName = ( slug : string ) =>
+			public getByName( slug : string )
 			{
 				//
-			};
+			}
 
-			public getByPid = ( pid : string, mode? : string ) =>
+			public getByPid( pid : string, mode? : string )
 			{
 				//
-			};
+			}
 
 		}
 

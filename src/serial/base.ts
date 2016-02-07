@@ -32,7 +32,7 @@ export namespace OBD2
 			}
 
 
-			onData( callBack : any )
+			public onData( callBack : any )
 			{
 				this.Serial.on( "data", callBack );
 			}
@@ -40,7 +40,7 @@ export namespace OBD2
 			/**
 			 * Serial port connect
 			 */
-			connect( callBack : any )
+			public connect( callBack : any )
 			{
 				this.Serial.open( ( error ) =>
 				{
@@ -61,7 +61,7 @@ export namespace OBD2
 			/**
 			 * Serial port disconnect
 			 */
-			disconnect( callBack : any )
+			public disconnect( callBack : any )
 			{
 				this.Serial.close( ( error ) =>
 				{
@@ -86,7 +86,7 @@ export namespace OBD2
 			 * @param data
 			 * @param callBack
 			 */
-			drain( data : string, callBack : any )
+			public drain( data : string, callBack : any )
 			{
 				// Serial is opened
 				if ( this.opened )
@@ -119,7 +119,7 @@ export namespace OBD2
 			 * @param data
 			 * @param callBack
 			 */
-			write( data : string, callBack : any )
+			public write( data : string, callBack : any )
 			{
 				// Serial is opened
 				if ( this.opened )
@@ -151,7 +151,7 @@ export namespace OBD2
 			 *
 			 * @param serial
 			 */
-			setSerial( serial : any ) : void
+			public setSerial( serial : any ) : void
 			{
 				this.Serial = serial;
 				this._eventHandlers();
@@ -163,7 +163,7 @@ export namespace OBD2
 			 *
 			 * @returns {any}
 			 */
-			getSerial() : any
+			public getSerial() : any
 			{
 				return this.Serial;
 			}
@@ -174,7 +174,7 @@ export namespace OBD2
 			 *
 			 * @param port
 			 */
-			setPort( port : string ) : void
+			public setPort( port : string ) : void
 			{
 				this.port = port;
 			}
@@ -185,7 +185,7 @@ export namespace OBD2
 			 *
 			 * @returns {string}
 			 */
-			getPort() : string
+			public getPort() : string
 			{
 				return this.port;
 			}
@@ -196,7 +196,7 @@ export namespace OBD2
 			 *
 			 * @param options
 			 */
-			setOptions( options : any ) : void
+			public setOptions( options : any ) : void
 			{
 				this.options = options;
 			}
@@ -207,7 +207,7 @@ export namespace OBD2
 			 *
 			 * @returns {any}
 			 */
-			getOptions() : any
+			public getOptions() : any
 			{
 				return this.options;
 			}
@@ -218,7 +218,7 @@ export namespace OBD2
 			 *
 			 * @returns {boolean}
 			 */
-			isOpen() : boolean
+			public isOpen() : boolean
 			{
 				return this.opened;
 			}
@@ -229,7 +229,7 @@ export namespace OBD2
 			 *
 			 * @private
 			 */
-			_eventHandlers()
+			public _eventHandlers()
 			{
 				this.Serial.on( "ready", () =>
 				{

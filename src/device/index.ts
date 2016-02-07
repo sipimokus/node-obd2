@@ -12,8 +12,8 @@ export namespace OBD2
 	{
 		export class Main
 		{
-			Device : any;
-			_name  : string;
+			private Device : any;
+			private _name  : string;
 
 			constructor( deviceName? : string )
 			{
@@ -22,7 +22,7 @@ export namespace OBD2
 					this.loadDevice( deviceName );
 				}
 
-				debug("Ready")
+				debug("Ready");
 			}
 
 			public connect( Serial : any, cb ? : any )
@@ -40,7 +40,7 @@ export namespace OBD2
 
 			public disconnect( Serial : any )
 			{
-
+				//
 			}
 
 			public loadDevice( deviceName : string )

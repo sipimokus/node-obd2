@@ -7,7 +7,7 @@ import _blueTooth  = require("./bluetooth");
 import _fakeSerial = require("./fake");
 import _usbSerial  = require("./usb");
 
-var debug = require("debug")("OBD2.Serial.Main");
+const debug = require("debug")("OBD2.Serial.Main");
 
 export namespace OBD2
 {
@@ -15,7 +15,7 @@ export namespace OBD2
 	{
 		export class Main
 		{
-			Serial : any;
+			private Serial : any;
 
 			/**
 			 * Serial declare
@@ -40,15 +40,18 @@ export namespace OBD2
 			}
 
 
-			getSerialInstance() : any
+			public getSerialInstance() : any
 			{
 				return this.Serial;
 			}
+
 
 			/**
 			 * Connection class selector
 			 *
 			 * @param type
+			 * @param port
+			 * @param options
 			 * @returns {any}
 			 */
 			private selectSerial( type: string, port : string, options : any )

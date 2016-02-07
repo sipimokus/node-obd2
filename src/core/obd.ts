@@ -206,7 +206,7 @@ export namespace OBD2
 								default:
 									reply.value = this._pidList[ i ].convertToUseful.apply(
 										this,
-										valueArray.slice( 2, 2 + parseInt( numberOfBytes ) )
+										valueArray.slice( 2, 2 + parseInt( numberOfBytes, 10 ) )
 									);
 									break;
 							}

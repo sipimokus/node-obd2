@@ -189,50 +189,6 @@ export namespace OBD2
 
 
 			/**
-			 * Converting DEC to HEX number
-			 *
-			 * @param decNumber
-			 * @returns {string}
-			 * @private
-			 *
-			 * @test Obd2CorePidTest
-			 */
-			private _dec2hex( decNumber : number ) : string
-			{
-				let hexNumber : string;
-
-				if ( decNumber < 0 )
-				{
-					decNumber = 0xFFFFFFFF + decNumber + 1;
-				}
-
-				hexNumber = String( decNumber.toString( 16 ).toUpperCase() );
-
-				if ( hexNumber.length === 1 )
-				{
-					hexNumber = "0" + hexNumber;
-				}
-
-				return hexNumber;
-			}
-
-
-			/**
-			 * Converting HEX to DEC number
-			 *
-			 * @param hexNumber
-			 * @returns {number}
-			 * @private
-			 *
-			 * @test Obd2CorePidTest
-			 */
-			private _hex2dec( hexNumber : string ) : number
-			{
-				return parseInt( hexNumber, 16 );
-			}
-
-
-			/**
 			 * Get real supported ECU PID list
 			 *
 			 * @returns {any}
@@ -248,18 +204,21 @@ export namespace OBD2
 
 				for ( let index in this.listPid )
 				{
-					let temp = String( this.listPid[ index ].pid );
-
-					if ( temp && this.listEcu.indexOf( temp ) > -1 )
+					if ( this.listPid.hasOwnProperty( index ) )
 					{
-						this.pidEcuList.push( temp );
+						let temp = String( this.listPid[ index ].pid );
+
+						if ( temp && this.listEcu.indexOf( temp ) > -1 )
+						{
+							this.pidEcuList.push( temp );
+						}
 					}
 				}
 
 				this.pidEcuList = this.pidEcuList.filter( ( value, index, self ) =>
 				{
 					return self.indexOf( value ) === index;
-				} );
+				});
 
 				return this.pidEcuList;
 			}
@@ -353,8 +312,51 @@ export namespace OBD2
 				}
 
 				return undefined;
-			};
+			}
 
+
+			/**
+			 * Converting DEC to HEX number
+			 *
+			 * @param decNumber
+			 * @returns {string}
+			 * @private
+			 *
+			 * @test Obd2CorePidTest
+			 */
+			private _dec2hex( decNumber : number ) : string
+			{
+				let hexNumber : string;
+
+				if ( decNumber < 0 )
+				{
+					decNumber = 0xFFFFFFFF + decNumber + 1;
+				}
+
+				hexNumber = String( decNumber.toString( 16 ).toUpperCase() );
+
+				if ( hexNumber.length === 1 )
+				{
+					hexNumber = "0" + hexNumber;
+				}
+
+				return hexNumber;
+			}
+
+
+			/**
+			 * Converting HEX to DEC number
+			 *
+			 * @param hexNumber
+			 * @returns {number}
+			 * @private
+			 *
+			 * @test Obd2CorePidTest
+			 */
+			private _hex2dec( hexNumber : string ) : number
+			{
+				return parseInt( hexNumber, 16 );
+			}
 
 		}
 

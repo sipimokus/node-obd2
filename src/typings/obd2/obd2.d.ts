@@ -1,5 +1,14 @@
 declare module obd2
 {
+	export interface OBD2_IOptions
+	{
+		delay	: number;
+		device	: string;
+		serial	: string;
+		port	: string;
+		baud	: number;
+		cleaner	: boolean;
+	}
 
 	export interface OBD2_IReplyParseCommand
 	{

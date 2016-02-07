@@ -1,3 +1,4 @@
+/* tslint:disable:no-bitwise */
 /**
  * OBD protocol emulated serial port
  *
@@ -13,9 +14,7 @@ let commands = [];
 require( "fs" ).readdirSync( __dirname + "/../data/pid" ).forEach( function ( e )
 {
 	commands.push( require( __dirname + "/../data/pid/" + e ) );
-} );
-
-let debug = require( "debug" )( "OBD2.Core.FakeSerial" );
+});
 
 export namespace OBD2
 {
@@ -209,7 +208,7 @@ export namespace OBD2
 					{
 						if ( pins[ i ][ b ] === 1 )
 						{
-							byte ^= 1 << b
+							byte ^= 1 << b;
 						}
 					}
 
