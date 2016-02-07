@@ -3,22 +3,17 @@ declare module obd2
 
 	export interface OBD2_IReplyParseCommand
 	{
-		value : string,
-		name  : string,
-		mode  : string,
-		pid   : string,
-		min	  : number,
-		max	  : number,
-		unit  : string,
+		value	: string,
+		name	: string,
+		mode	: string,
+		pid		: string,
+		min		: number,
+		max		: number,
+		unit	: string,
 	}
 
 	export interface OBD2_SerialInterface
 	{
-		//Serial 	: any;
-		//port 	: string;
-		//options	: any;
-		//opened	: boolean;
-
 		// Base commands
 		connect?( callBack ) : void;
 		disconnect?( callBack ) : void;
@@ -26,7 +21,7 @@ declare module obd2
 		drain?( data : string, callBack? : any ) : void;
 		readWrite?( data : string, callBack : any, timeout? : number ) : void;
 
-		onData?(callback:any);
+		onData?( callback : any );
 
 		setSerial?( serial : any ) : void;
 		getSerial?() : any;

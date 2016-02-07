@@ -11,7 +11,7 @@ var debug = require("debug")("OBD2.Serial.Main");
 
 export namespace OBD2
 {
-	export module Serial
+	export namespace Serial
 	{
 		export class Main
 		{
@@ -55,29 +55,31 @@ export namespace OBD2
 			{
 				switch ( type.toLowerCase() )
 				{
-					case 'bt':
-					case 'bluetooth':
+					case "bt":
+					case "bluetooth":
 
 						return new _blueTooth.OBD2.Serial.Bluetooth( port, options );
 
 						break;
 
-					case 'fake':
-					case 'fakeserial':
+					case "fake":
+					case "fakeserial":
 
 						return new _fakeSerial.OBD2.Serial.Fake( port, options );
 
 						break;
 
-					case 'usb':
-					case 'serial':
+					case "usb":
+					case "serial":
 
 						return new _usbSerial.OBD2.Serial.Usb( port, options );
 
 						break;
+
+					default:
+						return undefined;
 				}
 
-				return null;
 			}
 
 		}

@@ -1,17 +1,17 @@
 /// <reference path="../typings/main.d.ts"/>
 
-import fs	= require('fs');
-import path	= require('path');
+import fs	= require("fs");
+import path	= require("path");
 
 let debug	: debug.IDebug = require("debug")("OBD2.Core.DTC");
 
 export namespace OBD2
 {
-	export module Core
+	export namespace Core
 	{
 		export class DTC
 		{
-			list	: any = [];
+			private list	: any = [];
 
 			constructor()
 			{
@@ -54,10 +54,12 @@ export namespace OBD2
 
 			public getByName = ( slug : string ) =>
 			{
+				//
 			};
 
 			public getByPid = ( pid : string, mode? : string ) =>
 			{
+				//
 			};
 
 		}

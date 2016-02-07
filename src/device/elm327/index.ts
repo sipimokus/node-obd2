@@ -4,7 +4,7 @@
 
 export namespace OBD2
 {
-	export module Device
+	export namespace Device
 	{
 		export class ELM327
 		{
@@ -43,7 +43,7 @@ export namespace OBD2
 
 			public disconnect()
 			{
-
+				//
 			}
 
 		}

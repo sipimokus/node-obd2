@@ -4,7 +4,7 @@ let debug = require("debug")("OBD2.Core.Ticker");
 
 export namespace OBD2
 {
-	export module Core
+	export namespace Core
 	{
 		export class Ticker
 		{

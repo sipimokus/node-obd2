@@ -1,15 +1,13 @@
 /// <reference path="../typings/main.d.ts"/>
 
-let SerialPort : any	= (require('../core/fakeserial')).OBD2.Core.FakeSerial;
-
-import baseSerial	= require('./base');
+let SerialPort : any = (require( "../core/fakeserial" )).OBD2.Core.FakeSerial;
+import baseSerial    = require("./base");
 
 export namespace OBD2
 {
 	export namespace Serial
 	{
-		export class Fake
-		extends baseSerial.OBD2.Serial.Base
+		export class Fake extends baseSerial.OBD2.Serial.Base
 		{
 			/**
 			 * Constructor

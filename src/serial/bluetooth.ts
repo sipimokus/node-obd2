@@ -1,14 +1,13 @@
 /// <reference path="../typings/main.d.ts"/>
 
-let SerialPort : any	= require('serialport').SerialPort;
-import baseSerial	= require('./base');
+let SerialPort : any = require( "serialport" ).SerialPort;
+import baseSerial	 = require("./base");
 
 export namespace OBD2
 {
 	export namespace Serial
 	{
-		export class Bluetooth
-		extends baseSerial.OBD2.Serial.Base
+		export class Bluetooth extends baseSerial.OBD2.Serial.Base
 		{
 			/**
 			 * Constructor

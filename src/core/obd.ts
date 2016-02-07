@@ -1,19 +1,16 @@
 /// <reference path="../typings/main.d.ts"/>
 
-import fs	= require('fs');
-import path	= require('path');
-
-let debug	: debug.IDebug = require("debug")("OBD2.Core.OBD");
+let debug : debug.IDebug = require( "debug" )( "OBD2.Core.OBD" );
 
 export namespace OBD2
 {
-	export module Core
+	export namespace Core
 	{
 		export class OBD
 		{
-			_pidsList  		: any	 = [];
-			_dataReceived 	: string = "";
-			_deviceCommands : any = [
+			private _pidList 		: any;
+			private _dataReceived 	: string;
+			private _deviceCommands	: any = [
 				"?",
 				"OK",
 				"SEARCHING",
@@ -23,20 +20,16 @@ export namespace OBD2
 				"NO DATA",
 				"CAN ERROR",
 				"ERROR",
-				"BUS INIT"
-
-			]; // https://www.scantool.net/forum/index.php?topic=6927.0
+				"BUS INIT",
+			];
+			// https://www.scantool.net/forum/index.php?topic=6927.0
 
 			constructor( pidList : any )
 			{
-				this._pidsList = pidList;
+				this._pidList		 = pidList;
+				this._dataReceived 	 = "";
 
-				debug("Ready");
-			}
-
-			public dataToPid()
-			{
-
+				debug( "Ready" );
 			}
 
 
@@ -48,22 +41,17 @@ export namespace OBD2
 			 */
 			public parseDataStream( data : any, cb : any )
 			{
-				var currentString, forString, indexOfEnd, arrayOfCommands;
+				let currentString, forString, arrayOfCommands;
 
 				// making sure it's a utf8 string
-				currentString = this._dataReceived + data.toString('utf8');
+				currentString   = this._dataReceived + data.toString( "utf8" );
+				arrayOfCommands = currentString.split( ">" );
 
-				arrayOfCommands = currentString.split('>');
-
-				//console.log(arrayOfCommands, currentString, arrayOfCommands[0] == "SEARCHING...\r\r", arrayOfCommands[0] == "SEARCHING...\\r\\r");
-
-				if( arrayOfCommands.length < 2 )
+				if ( arrayOfCommands.length < 2 )
 				{
-					this._dataReceived = arrayOfCommands[0];
-
-					if ( this._deviceCommands.indexOf(this._dataReceived.split('\r')[0]) > -1 )
+					if ( this._deviceCommands.indexOf( this._dataReceived.split( "\r" )[ 0 ] ) > -1 )
 					{
-						cb("ecu", arrayOfCommands, this._dataReceived);
+						cb( "ecu", arrayOfCommands, this._dataReceived );
 						this._dataReceived = "";
 					}
 				}
@@ -71,50 +59,46 @@ export namespace OBD2
 				{
 					for ( let commandNumber = 0; commandNumber < arrayOfCommands.length; commandNumber++ )
 					{
-						forString = arrayOfCommands[commandNumber];
+						forString = arrayOfCommands[ commandNumber ];
 
-						if( forString === '' )
+						if ( forString === "" )
 						{
 							continue;
 						}
 
-						var multipleMessages = forString.split('\r');
-						for ( var messageNumber = 0; messageNumber < multipleMessages.length; messageNumber++ )
+						let multipleMessages = forString.split( "\r" );
+						for ( let messageNumber = 0; messageNumber < multipleMessages.length; messageNumber++ )
 						{
-							var messageString = multipleMessages[messageNumber];
+							let messageString = multipleMessages[ messageNumber ];
 
-							if(messageString === '')
+							if ( messageString === "" )
 							{
 								continue;
 							}
 
-							var reply;
+							let reply = this.parseCommand( messageString );
 
-							if ( this._deviceCommands.indexOf(messageString) > -1 )
+							if ( this._deviceCommands.indexOf( messageString ) > -1 )
 							{
-								cb("ecu", reply, messageString);
+								cb( "ecu", reply, messageString );
 							}
 							else
 							{
-								reply = this.parseCommand(messageString);
 
-								if( !reply.value || !reply.name || (!reply.mode && !reply.pid) )
+								if ( !reply.value || !reply.name || (!reply.mode && !reply.pid) )
 								{
-									cb("bug", reply, messageString);
+									cb( "bug", reply, messageString );
 								}
-								else if ( reply.mode == "41" )
+								else if ( reply.mode === "41" )
 								{
-									cb("pid", reply, messageString);
+									cb( "pid", reply, messageString );
 								}
-								else if( reply.mode == "43" )
+								else if ( reply.mode === "43" )
 								{
-									cb("dct", reply, messageString);
+									cb( "dct", reply, messageString );
 								}
-
 
 							}
-
-							this._dataReceived = "";
 
 						}
 
@@ -136,14 +120,14 @@ export namespace OBD2
 			 */
 			public parseCommand( hexString : string )
 			{
-				var reply : obd2.OBD2_IReplyParseCommand = {
-						value : null,
-						name  : null,
-						mode  : null,
-						pid   : null,
-						min	  : null,
-						max	  : null,
-						unit  : null,
+				let reply : obd2.OBD2_IReplyParseCommand = {
+						value : undefined,
+						name  : undefined,
+						mode  : undefined,
+						pid   : undefined,
+						min   : undefined,
+						max   : undefined,
+						unit  : undefined,
 					},
 					byteNumber,
 					valueArray; //New object
@@ -155,53 +139,75 @@ export namespace OBD2
 					return reply;
 				}
 
-				hexString = hexString.replace(/ /g, ''); //Whitespace trimming //Probably not needed anymore?
+				hexString = hexString.replace( / /g, "" ); //Whitespace trimming //Probably not needed anymore?
 				valueArray = [];
 
-				for (byteNumber = 0; byteNumber < hexString.length; byteNumber += 2)
+				for ( byteNumber = 0; byteNumber < hexString.length; byteNumber += 2 )
 				{
-					valueArray.push(hexString.substr(byteNumber, 2));
+					valueArray.push( hexString.substr( byteNumber, 2 ) );
 				}
 
 				// PID mode
-				if (valueArray[0] === "41")
+				if ( valueArray[ 0 ] === "41" )
 				{
-					reply.mode = valueArray[0];
-					reply.pid = valueArray[1];
+					reply.mode = valueArray[ 0 ];
+					reply.pid  = valueArray[ 1 ];
 
-					for (var i = 0; i < this._pidsList.length; i++)
+					for ( let i = 0; i < this._pidList.length; i++ )
 					{
-						if ( this._pidsList[i].pid == reply.pid )
+						if ( this._pidList[ i ].pid === reply.pid )
 						{
-							var numberOfBytes = this._pidsList[i].bytes;
+							let numberOfBytes = this._pidList[ i ].bytes;
 
-							reply.name  = this._pidsList[i].name;
-							reply.min   = this._pidsList[i].min;
-							reply.max   = this._pidsList[i].max;
-							reply.unit  = this._pidsList[i].unit;
+							reply.name = this._pidList[ i ].name;
+							reply.min  = this._pidList[ i ].min;
+							reply.max  = this._pidList[ i ].max;
+							reply.unit = this._pidList[ i ].unit;
 
 							// Use static parameter (performance up, usually)
 							switch ( numberOfBytes )
 							{
 								case 1:
-									reply.value = this._pidsList[i].convertToUseful( valueArray[2] );
+									reply.value = this._pidList[ i ].convertToUseful(
+										valueArray[ 2 ]
+									);
 									break;
 
 								case 2:
-									reply.value = this._pidsList[i].convertToUseful( valueArray[2], valueArray[3] );
+									reply.value = this._pidList[ i ].convertToUseful(
+										valueArray[ 2 ],
+										valueArray[ 3 ]
+									);
 									break;
 
 								case 4:
-									reply.value = this._pidsList[i].convertToUseful( valueArray[2], valueArray[3], valueArray[4], valueArray[5] );
+									reply.value = this._pidList[ i ].convertToUseful(
+										valueArray[ 2 ],
+										valueArray[ 3 ],
+										valueArray[ 4 ],
+										valueArray[ 5 ]
+									);
 									break;
 
 								case 8:
-									reply.value = this._pidsList[i].convertToUseful( valueArray[2], valueArray[3], valueArray[4], valueArray[5], valueArray[6], valueArray[7], valueArray[8], valueArray[9] );
+									reply.value = this._pidList[ i ].convertToUseful(
+										valueArray[ 2 ],
+										valueArray[ 3 ],
+										valueArray[ 4 ],
+										valueArray[ 5 ],
+										valueArray[ 6 ],
+										valueArray[ 7 ],
+										valueArray[ 8 ],
+										valueArray[ 9 ]
+									);
 									break;
 
 								// Special length, dynamic parameters
 								default:
-									reply.value = this._pidsList[i].convertToUseful.apply( this, valueArray.slice( 2, 2 + parseInt( numberOfBytes ) ) );
+									reply.value = this._pidList[ i ].convertToUseful.apply(
+										this,
+										valueArray.slice( 2, 2 + parseInt( numberOfBytes ) )
+									);
 									break;
 							}
 
@@ -213,15 +219,22 @@ export namespace OBD2
 				}
 
 				// DTC mode
-				else if ( valueArray[0] === "43" )
+				else if ( valueArray[ 0 ] === "43" )
 				{
-					reply.mode = valueArray[0];
-					for ( let i = 0; i < this._pidsList.length; i++ )
+					reply.mode = valueArray[ 0 ];
+					for ( let i = 0; i < this._pidList.length; i++ )
 					{
-						if( this._pidsList[i].mode == "03" )
+						if ( this._pidList[ i ].mode === "03" )
 						{
-							reply.name  = this._pidsList[i].name;
-							reply.value = this._pidsList[i].convertToUseful( valueArray[1], valueArray[2], valueArray[3], valueArray[4], valueArray[5], valueArray[6] );
+							reply.name  = this._pidList[ i ].name;
+							reply.value = this._pidList[ i ].convertToUseful(
+								valueArray[ 1 ],
+								valueArray[ 2 ],
+								valueArray[ 3 ],
+								valueArray[ 4 ],
+								valueArray[ 5 ],
+								valueArray[ 6 ]
+							);
 						}
 					}
 

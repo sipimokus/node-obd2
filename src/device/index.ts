@@ -2,13 +2,13 @@
 
 /// <reference path="../serial/index.ts"/>
 
-let path  = require('path');
+let path  = require("path");
 
 let debug = require("debug")("OBD2.Device.Main");
 
 export namespace OBD2
 {
-	export module Device
+	export namespace Device
 	{
 		export class Main
 		{

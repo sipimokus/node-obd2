@@ -1,23 +1,22 @@
 /// <reference path="../typings/main.d.ts"/>
 
-import 		events	= require('events');
+import        events    = require("events");
 
-var debug = require("debug")("OBD2.Serial.Base");
-//var debug = console.log;
+let debug = require( "debug" )( "OBD2.Serial.Base" );
 
 export namespace OBD2
 {
-	export module Serial
+	export namespace Serial
 	{
 		export class Base
 		extends events.EventEmitter
 		implements obd2.OBD2_SerialInterface
 		{
-			private Serial	: any;
+			private Serial : any;
 
-			private port	: string;
-			private options	: any;
-			private opened	: boolean;
+			private port : string;
+			private options : any;
+			private opened : boolean;
 
 
 			/**
@@ -27,16 +26,16 @@ export namespace OBD2
 			{
 				super();
 
-				this.opened	  = false;
+				this.opened = false;
 
-				this.emit( 'ready' );
+				this.emit( "ready" );
 			}
 
 
-			onData = ( callBack : any ) =>
+			onData( callBack : any )
 			{
 				this.Serial.on( "data", callBack );
-			};
+			}
 
 			/**
 			 * Serial port connect
@@ -46,8 +45,8 @@ export namespace OBD2
 				this.Serial.open( ( error ) =>
 				{
 					this.opened = !!(typeof this.Serial.isOpen === "function"
-						? this.Serial.isOpen()
-						: this.Serial.isOpen
+							? this.Serial.isOpen()
+							: this.Serial.isOpen
 					);
 
 					if ( typeof callBack === "function" )
@@ -55,7 +54,7 @@ export namespace OBD2
 						callBack();
 					}
 
-				});
+				} );
 			}
 
 
@@ -67,8 +66,8 @@ export namespace OBD2
 				this.Serial.close( ( error ) =>
 				{
 					this.opened = !!(typeof this.Serial.isOpen === "function"
-						? this.Serial.isOpen()
-						: this.Serial.isOpen
+							? this.Serial.isOpen()
+							: this.Serial.isOpen
 					);
 
 					if ( typeof callBack === "function" )
@@ -76,7 +75,7 @@ export namespace OBD2
 						callBack();
 					}
 
-				});
+				} );
 			}
 
 
@@ -96,18 +95,18 @@ export namespace OBD2
 					// Try write data
 					try
 					{
-						this.emit("write", data);
+						this.emit( "write", data );
 						this.Serial.write( data, ( error ) =>
 						{
 							if ( typeof callBack === "function" )
 							{
 								this.Serial.drain( callBack );
 							}
-						});
+						} );
 					}
 					catch ( exceptionError )
 					{
-						debug('Error while writing, connection is probably lost.');
+						debug( "Error while writing, connection is probably lost." );
 						debug( exceptionError );
 					}
 				}
@@ -129,18 +128,18 @@ export namespace OBD2
 					// Try write data
 					try
 					{
-						this.emit("write", data);
+						this.emit( "write", data );
 						this.Serial.write( data, ( error ) =>
 						{
 							if ( typeof callBack === "function" )
 							{
 								callBack();
 							}
-						});
+						} );
 					}
 					catch ( exceptionError )
 					{
-						debug('Error while writing, connection is probably lost.');
+						debug( "Error while writing, connection is probably lost." );
 						debug( exceptionError );
 					}
 				}
@@ -232,41 +231,41 @@ export namespace OBD2
 			 */
 			_eventHandlers()
 			{
-				this.Serial.on("ready", () =>
+				this.Serial.on( "ready", () =>
 				{
-					debug("Serial port ready");
-				});
+					debug( "Serial port ready" );
+				} );
 
-				this.Serial.on("open", ( port ) =>
+				this.Serial.on( "open", ( port ) =>
 				{
-					debug("Serial port open : " +  port );
-				});
+					debug( "Serial port open : " + port );
+				} );
 
-				this.Serial.on("close", ( port ) =>
+				this.Serial.on( "close", ( port ) =>
 				{
-					debug("Serial port close: " +  port );
-				});
+					debug( "Serial port close: " + port );
+				} );
 
-				this.Serial.on("error", ( error, port ) =>
+				this.Serial.on( "error", ( error, port ) =>
 				{
-					debug("Serial port error: " +  port );
-				});
+					debug( "Serial port error: " + port );
+				} );
 
-				this.Serial.on("data", ( data, port ) =>
+				this.Serial.on( "data", ( data, port ) =>
 				{
-					this.emit("data", data);
+					this.emit( "data", data );
 
-					data = String(data).replace(/(?:\r\n|\r|\n)/g, '');
+					data = String( data ).replace( /(?:\r\n|\r|\n)/g, "" );
 
-					debug("Serial port data : " +  data );
-				});
+					debug( "Serial port data : " + data );
+				} );
 
-				this.on("write", ( data, port ) =>
+				this.on( "write", ( data, port ) =>
 				{
-					data = String(data).replace(/(?:\r\n|\r|\n)/g, '');
+					data = String( data ).replace( /(?:\r\n|\r|\n)/g, "" );
 
-					debug("Serial port write: " +  data );
-				});
+					debug( "Serial port write: " + data );
+				} );
 
 			}
 
