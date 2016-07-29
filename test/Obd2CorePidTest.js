@@ -96,7 +96,11 @@ describe( "OBD2.Core.PID", function()
 			subject._loadPidEcuList( "pidsupp0", "BE1FA813" );
 
 			asserts.notEqual(  subject.getList().length, 0, "PID ECU list is empty" );
-			asserts.deepEqual( subject.getList(), [ '10', '11', '20' ], "ECU PID list error" );
+			asserts.deepEqual( subject.getList(), [
+				'01', '03', '04', '05', '06', '07', '0C', '0D', '0E', '0F',
+				'10', '11', '1C', '1F',
+				'20'
+			], "ECU PID list error" );
 		});
 
 	});

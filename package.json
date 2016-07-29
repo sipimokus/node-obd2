@@ -9,7 +9,7 @@
     "lint": "tsconfig-lint && tslint -c tslint.json \"src/**/*.ts\"",
     "docs": "typedoc --options typedoc.json ./src/",
     "build": "node bin/build && tsc",
-    "test": "mocha --compilers --reporter spec test"
+    "test": "mocha --reporter spec test"
   },
   "repository": {
     "type": "git",
