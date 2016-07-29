@@ -28,6 +28,9 @@ export namespace OBD2
 				debug( "Ready" );
 			}
 
+			/**
+			 * Get next tick
+			 */
 			public writeNext() : void
 			{
 				if ( this.commands.length > 0 )
@@ -53,6 +56,14 @@ export namespace OBD2
 
 			}
 
+			/**
+			 * Adding item for ticker
+			 *
+			 * @param type - Name of data type
+			 * @param data - Value of data type
+			 * @param loop - Automatic loop, or manual
+			 * @param callBack - Item ticking callback
+			 */
 			public addItem( type : string, data : any, loop? : boolean, callBack? : any )
 			{
 				loop = loop ? loop : false;
@@ -68,6 +79,12 @@ export namespace OBD2
 				this._autoTimer();
 			}
 
+			/**
+			 * Remove ticker item
+			 *
+			 * @param type
+			 * @param data
+			 */
 			public delItem( type : string, data : any )
 			{
 				for ( let index in this.commands )
@@ -90,6 +107,19 @@ export namespace OBD2
 				this._autoTimer();
 			}
 
+			/**
+			 * List ticker items
+			 *
+			 * @returns {any}
+			 */
+			public getList()
+			{
+				return this.commands;
+			}
+
+			/**
+			 * Starting ticker loop
+			 */
 			public start()
 			{
 				debug( "Start" );
@@ -110,6 +140,10 @@ export namespace OBD2
 				);
 			}
 
+			/**
+			 *
+			 * Stopping ticker loop
+			 */
 			public stop()
 			{
 				debug( "Stop" );
@@ -122,6 +156,9 @@ export namespace OBD2
 				this.waiting  = false;
 			}
 
+			/**
+			 * Pausing ticker loop
+			 */
 			public pause()
 			{
 				debug( "Pause" );
