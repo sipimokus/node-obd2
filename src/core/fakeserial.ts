@@ -6,7 +6,7 @@
  * https://github.com/matejkramny/nodejs-obd-parser
  *
  */
-/// <reference path="../typings/main.d.ts"/>
+/// <reference path="../typings/index.d.ts"/>
 
 import        events    = require("events");
 

@@ -1,4 +1,4 @@
-/// <reference path="../typings/main.d.ts"/>
+/// <reference path="../typings/index.d.ts"/>
 
 let debug : debug.IDebug = require( "debug" )( "OBD2.Core.OBD" );
 

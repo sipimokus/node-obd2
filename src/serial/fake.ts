@@ -1,4 +1,4 @@
-/// <reference path="../typings/main.d.ts"/>
+/// <reference path="../typings/index.d.ts"/>
 
 let SerialPort : any = (require( "../core/fakeserial" )).OBD2.Core.FakeSerial;
 import baseSerial    = require("./base");
