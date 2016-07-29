@@ -63,6 +63,8 @@ export namespace OBD2
 			 * @param data - Value of data type
 			 * @param loop - Automatic loop, or manual
 			 * @param callBack - Item ticking callback
+			 *
+			 * @test Obd2CoreTickerTest
 			 */
 			public addItem( type : string, data : any, loop? : boolean, callBack? : any )
 			{
@@ -84,6 +86,8 @@ export namespace OBD2
 			 *
 			 * @param type
 			 * @param data
+			 *
+			 * @test Obd2CoreTickerTest
 			 */
 			public delItem( type : string, data : any )
 			{
@@ -111,6 +115,8 @@ export namespace OBD2
 			 * List ticker items
 			 *
 			 * @returns {any}
+			 *
+			 * @test Obd2CoreTickerTest
 			 */
 			public getList()
 			{
