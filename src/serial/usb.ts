@@ -1,6 +1,6 @@
 /// <reference path="../typings/index.d.ts"/>
 
-let SerialPort : any = require( "serialport" ).SerialPort;
+let SerialPort : any = require( "serialport" );
 import baseSerial    = require("./base");
 
 export namespace OBD2
