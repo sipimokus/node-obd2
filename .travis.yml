@@ -3,8 +3,8 @@ language:
   - objective-c
 
 #node_js:
-#  - "5.3"
-#  - "4.2"
+#  - "5.12"
+#  - "4.4"
 #  - "0.12"
 #  - "iojs"
 
@@ -13,10 +13,12 @@ os:
   - osx
 
 env:
-  - NODE_VERSION="5.3"
-  - NODE_VERSION="4.2"
-  - NODE_VERSION="0.12"
+  - NODE_VERSION="6.3"
+  - NODE_VERSION="5.12"
+  - NODE_VERSION="4.4"
   - NODE_VERSION="iojs"
+  - NODE_VERSION="0.12"
+
 
 cache:
   bundler: true
