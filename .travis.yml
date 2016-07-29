@@ -1,0 +1,64 @@
+language:
+#  - node_js
+  - objective-c
+
+#node_js:
+#  - "5.3"
+#  - "4.2"
+#  - "0.12"
+#  - "iojs"
+
+os:
+  - linux
+  - osx
+
+env:
+  - NODE_VERSION="5.3"
+  - NODE_VERSION="4.2"
+  - NODE_VERSION="0.12"
+  - NODE_VERSION="iojs"
+
+cache:
+  bundler: true
+  directories:
+  - node_modules
+
+sudo: false
+
+matrix:
+  allow_failures:
+  - os: osx
+
+services:
+  - redis
+
+before_install:
+  # nvm is not yet supported on osx, manually install
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install nvm; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then source $(brew --prefix nvm)/nvm.sh; fi
+
+  # nvm and npm
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - source ~/.nvm/nvm.sh
+
+  # Setup Node.js version-specific dependencies
+  - "test $TRAVIS_NODE_VERSION != '0.8' || npm rm --save-dev istanbul"
+
+install:
+  - nvm install $NODE_VERSION
+  - node --version
+  - npm install
+
+script:
+  # Run test script, depending on istanbul install
+  - "test ! -z $(npm -ps ls istanbul) || npm test"
+  - "test   -z $(npm -ps ls istanbul) || npm run-script test-ci"
+
+#after_script:
+#  - "test -e ./coverage/lcov.info && npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
+
+
+# Example
+# https://github.com/octoblu/gateblu-forever/blob/master/.travis.yml
+# https://github.com/travis-ci/travis-ci/issues/2311
