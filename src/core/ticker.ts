@@ -187,19 +187,6 @@ export namespace OBD2
 				}
 
 				this.counter = 0;
-
-//				this.Ticker  = setInterval(
-//					() =>
-//					{
-//						this.counter++;
-//						if ( !this.waiting /*|| this.counter >= parseInt(10000 / this.timeout)*/ )
-//						{
-//							this.writeNext();
-//						}
-//
-//					},
-//					this.timeout
-//				);
 			}
 
 			/**
@@ -209,8 +196,6 @@ export namespace OBD2
 			public stop()
 			{
 				debug( "Stop" );
-
-				clearInterval( this.Ticker );
 
 				this.commands = [];
 				this.counter  = 0;
@@ -225,7 +210,8 @@ export namespace OBD2
 			{
 				debug( "Pause" );
 
-				clearInterval( this.Ticker );
+				this.stopped  = true;
+				this.waiting  = false;
 			}
 
 			private _autoTimer()

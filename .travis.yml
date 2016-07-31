@@ -1,24 +1,15 @@
 language:
-#  - node_js
-  - objective-c
+  - node_js
 
-#node_js:
-#  - "5.12"
-#  - "4.4"
-#  - "0.12"
-#  - "iojs"
+node_js:
+  - "5.12"
+  - "4.4"
+  - "iojs"
+  - "0.12"
 
 os:
   - linux
   - osx
-
-env:
-  - NODE_VERSION="6.3"
-  - NODE_VERSION="5.12"
-  - NODE_VERSION="4.4"
-  - NODE_VERSION="iojs"
-  - NODE_VERSION="0.12"
-
 
 cache:
   bundler: true
@@ -28,32 +19,9 @@ cache:
 sudo: false
 
 matrix:
+  fast_finish: true
   allow_failures:
   - os: osx
-
-services:
-  - redis
-
-before_install:
-  # nvm is not yet supported on osx, manually install
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install nvm; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then source $(brew --prefix nvm)/nvm.sh; fi
-
-  # nvm and npm
-  - rm -rf ~/.nvm
-  - git clone https://github.com/creationix/nvm.git ~/.nvm
-  - source ~/.nvm/nvm.sh
-
-  # Setup Node.js version-specific dependencies
-  - "test $TRAVIS_NODE_VERSION != '0.8' || npm rm --save-dev istanbul"
-
-install:
-  - nvm install $NODE_VERSION
-  - npm config delete prefix
-  - nvm use $NODE_VERSION
-  - nvm alias default $NODE_VERSION
-  - node --version
-  - npm install
 
 script:
   # Run test script, depending on istanbul install
