@@ -312,7 +312,7 @@ export namespace OBD2
 			/**
 			 * Automatic timer start or stop
 			 * Used in addItem and delItem
-			 * 
+			 *
 			 * @private
 			 */
 			private _autoTimer()
