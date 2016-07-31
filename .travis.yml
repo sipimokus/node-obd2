@@ -16,7 +16,7 @@ cache:
   directories:
   - node_modules
 
-sudo: false
+sudo: required
 
 matrix:
   fast_finish: true
