@@ -18,17 +18,25 @@ cache:
 
 sudo: false
 
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.9
-
 matrix:
   fast_finish: true
   allow_failures:
   - os: osx
+
+before_install:
+  # This fixes a problem with apt-get failing later, see http://docs.travis-ci.com/user/installing-dependencies/#Installing-Ubuntu-packages
+  - sudo apt-get update -qq
+  # We install all dependencies for node-opencv using apt-get
+  - sudo apt-get install libcv-dev
+  - sudo apt-get install libopencv-dev
+  - sudo apt-get install libhighgui-dev
+  # Get commit message to check if we should publish binary
+  - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
+  # Put local npm modules .bin on PATH
+  - export PATH=./node_modules/.bin/:$PATH
+  # Install node-gyp and node-pre-gyp so it is available for packaging and publishing
+  - npm install node-gyp -g
+  - npm install node-pre-gyp
 
 # Example
 # https://github.com/octoblu/gateblu-forever/blob/master/.travis.yml
