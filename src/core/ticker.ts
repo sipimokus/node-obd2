@@ -1,6 +1,7 @@
 /// <reference path="../typings/index.d.ts"/>
 
-let debug = require( "debug" )( "OBD2.Core.Ticker" );
+let debug  = require( "debug" )( "OBD2.Core.Ticker" );
+let crypto = require( "crypto" );
 
 export namespace OBD2
 {
@@ -29,31 +30,72 @@ export namespace OBD2
 			}
 
 			/**
+			 * Hashing data item
+			 *
+			 * @param type
+			 * @param data
+			 * @returns {Buffer|*}
+			 */
+			private hashItem( type, data )
+			{
+				let text = type;
+
+				if ( Object.prototype.toString.call(data) == '[object Array]' )
+				{
+					text+= Object.keys(data);
+					text+= data.toString();
+					text+= Object.keys(data);
+				}
+				else if ( typeof data == "object")
+				{
+					text+= Object.keys(data);
+					text+= Object.keys(data).map(function (key) {return data[key]}).toString();
+					text+= Object.keys(data);
+				}
+				else
+				{
+					text+= data;
+				}
+
+				return crypto.createHash('md5').update(text).digest('hex');
+			}
+
+			/**
 			 * Get next tick
 			 */
 			public writeNext() : void
 			{
-				if ( this.commands.length > 0 )
-				{
-					this.waiting = true;
-
-					let cmd = this.commands.shift();
-
-					debug( "Tick " + String( cmd.type ) + " : " + String( cmd.data ) );
-
-					cmd.call(
-						() => {
-							this.waiting = false;
-						},
-						cmd
-					);
-
-					if ( cmd.loop )
+				setTimeout(() => {
+					if ( this.commands.length > 0 )
 					{
-						this.commands.push( cmd );
-					}
-				}
+						this.waiting = true;
 
+						let cmd = this.commands.shift();
+
+						debug( "Tick " + String( cmd.type ) + " : " + String( cmd.data ) );
+
+						if ( typeof cmd.call == "function" )
+						{
+							cmd.call(
+								() => {
+									this.waiting = false;
+								},
+								cmd
+							);
+						}
+
+						if ( cmd.loop )
+						{
+							this.commands.push( cmd );
+						}
+
+						this.counter++;
+						if ( !this.waiting )
+						{
+							this.writeNext();
+						}
+					}
+				}, this.timeout);
 			}
 
 			/**
@@ -71,6 +113,7 @@ export namespace OBD2
 				loop = loop ? loop : false;
 
 				this.commands.push( {
+					hash : this.hashItem( type, data ),
 					type : type,
 					data : data,
 					loop : loop,
@@ -91,16 +134,22 @@ export namespace OBD2
 			 */
 			public delItem( type : string, data : any )
 			{
+				let hash = this.hashItem( type, data );
+
 				for ( let index in this.commands )
 				{
 					if ( this.commands.hasOwnProperty( index ) )
 					{
 						let cmd = this.commands[ index ];
-						if ( cmd.type === type && cmd.data === data )
+						if ( cmd.hash === hash )
 						{
-							if ( this.commands.length > 0 )
+							if ( this.commands.length > 1 )
 							{
 								this.commands.splice( index, 1 );
+							}
+							else
+							{
+								this.commands = [];
 							}
 
 							break;	// Loop break
@@ -130,20 +179,27 @@ export namespace OBD2
 			{
 				debug( "Start" );
 
-				this.counter = 0;
-				this.stopped = false;
-				this.Ticker  = setInterval(
-					() =>
-					{
-						this.counter++;
-						if ( !this.waiting /*|| this.counter >= parseInt(10000 / this.timeout)*/ )
-						{
-							this.writeNext();
-						}
+				if ( !this.stopped )
+				{
+					this.stopped = false;
 
-					},
-					this.timeout
-				);
+					this.writeNext();
+				}
+
+				this.counter = 0;
+
+//				this.Ticker  = setInterval(
+//					() =>
+//					{
+//						this.counter++;
+//						if ( !this.waiting /*|| this.counter >= parseInt(10000 / this.timeout)*/ )
+//						{
+//							this.writeNext();
+//						}
+//
+//					},
+//					this.timeout
+//				);
 			}
 
 			/**
@@ -178,7 +234,8 @@ export namespace OBD2
 				{
 					if ( this.stopped )
 					{
-						this.start();
+						//this.start();
+						this.writeNext();
 					}
 				}
 				else
