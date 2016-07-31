@@ -48,7 +48,7 @@ export namespace OBD2
 			this.DTC    = new DTC();
 			this.PID    = new PID();
 			this.OBD    = new OBD( this.PID.getListPID() );
-			this.Ticker = new Ticker( this._options.delay );
+			this.Ticker = new Ticker( this._options.delay, 5 );
 			this.Device = new Device( this._options.device );
 			this.Serial = new Serial( this._options.serial, this._options.port, {
 				baudrate : this._options.baud
@@ -75,8 +75,6 @@ export namespace OBD2
 			{
 				this.Device.connect( this, () =>
 				{
-
-
 					/*this.Serial.getSerial().on("data", ( data ) =>
 					 {
 					 console.log("data2", data);
@@ -100,7 +98,7 @@ export namespace OBD2
 				this.once( "dataReceived", ( data ) =>
 				{
 					// Wait a bit
-					setTimeout( next, 100 );
+					setTimeout( next, 1000 );
 				} );
 
 			} );

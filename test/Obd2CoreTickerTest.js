@@ -10,6 +10,7 @@ describe( 'OBD2.Core.Ticker', function()
 	var subject;
 	var testFilesPath;
 	var timerDelay = 50;
+	var timerOutLoop = 5;
 
 
 	/**
@@ -17,7 +18,7 @@ describe( 'OBD2.Core.Ticker', function()
 	 */
 	beforeEach( function ()
 	{
-		subject			= new OBD2.Core.Ticker( timerDelay );
+		subject			= new OBD2.Core.Ticker( timerDelay, 5 );
 		testFilesPath	= path.join( __dirname, "..", "src", "data", "pid" );
 	});
 
@@ -64,7 +65,8 @@ describe( 'OBD2.Core.Ticker', function()
 					data : sendData,
 					loop : false,
 					call : undefined,
-					fail : 0
+					fail : 0,
+					sync : true
 				}
 			], "Ticker list error" );
 		});
@@ -107,7 +109,8 @@ describe( 'OBD2.Core.Ticker', function()
 					data : sendData,
 					loop : false,
 					call : undefined,
-					fail : 0
+					fail : 0,
+					sync : true
 				}
 			], "Ticker list error" );
 		});
@@ -116,6 +119,7 @@ describe( 'OBD2.Core.Ticker', function()
 	describe('#start()', function ()
 	{
 		var sendData = ["foo", "bar"];
+		subject	     = new OBD2.Core.Ticker( timerDelay );
 
 		it( 'Testing ticker precision', function(done)
 		{
@@ -126,6 +130,8 @@ describe( 'OBD2.Core.Ticker', function()
 			{
 				loop++;
 				time = Date.now() - time;
+
+				subject.stop();
 
 				// 10% tolerance
 				if ( time >= timerDelay * 1.1 )
@@ -151,7 +157,6 @@ describe( 'OBD2.Core.Ticker', function()
 			var loop = 0;
 			var need = 10;
 			var time = Date.now();
-			var timeSum = 0;
 
 			subject.addItem("PID", sendData, true, function( next )
 			{
@@ -160,6 +165,8 @@ describe( 'OBD2.Core.Ticker', function()
 				if ( loop == need )
 				{
 					time = Date.now() - time;
+
+					subject.stop();
 
 					// 10% tolerance
 					if ( time >= timerDelay * need * 1.1 )
@@ -179,6 +186,94 @@ describe( 'OBD2.Core.Ticker', function()
 				else
 				{
 					next();
+				}
+			});
+
+			subject.start();
+		});
+
+		it( 'Testing ticker loop with one item 5 loop time out', function(done)
+		{
+			var loop = 0;
+			var need = 10;
+			var maxTime = parseInt((timerDelay * need + 1 * timerDelay * timerOutLoop) * 1.1);
+			var minTime = parseInt((timerDelay * need + 1 * timerDelay * timerOutLoop) * 0.9);
+			var time = Date.now();
+
+			subject.addItem("PID", sendData, true, function( next )
+			{
+				loop++;
+
+				if ( loop == need )
+				{
+					time = Date.now() - time;
+
+					subject.stop();
+
+					// 10% tolerance
+					if ( time >= maxTime )
+					{
+						done("Ticker delay problem, too slow, time: " + time + ", max: " + maxTime +", loop: " + loop);
+					}
+					// 10% tolerance
+					else if ( time <= minTime )
+					{
+						done("Ticker delay problem, too fast, time: " + time + ", min: " + minTime +", loop: " + loop);
+					}
+					else
+					{
+						done();
+					}
+				}
+				else
+				{
+					// Skip one loop
+					if ( loop != 5 )
+						next();
+				}
+			});
+
+			subject.start();
+		});
+
+		it( 'Testing ticker loop with three item 5 loop time out', function(done)
+		{
+			var loop = 0;
+			var need = 10;
+			var maxTime = parseInt((timerDelay * need + 3 * timerDelay * timerOutLoop) * 1.1);
+			var minTime = parseInt((timerDelay * need + 3 * timerDelay * timerOutLoop) * 0.9);
+			var time = Date.now();
+
+			subject.addItem("PID", sendData, true, function( next )
+			{
+				loop++;
+
+				if ( loop == need )
+				{
+					time = Date.now() - time;
+
+					subject.stop();
+
+					// 10% tolerance
+					if ( time >= maxTime )
+					{
+						done("Ticker delay problem, too slow, time: " + time + ", max: " + maxTime +", loop: " + loop);
+					}
+					// 10% tolerance
+					else if ( time <= minTime )
+					{
+						done("Ticker delay problem, too fast, time: " + time + ", min: " + minTime +", loop: " + loop);
+					}
+					else
+					{
+						done();
+					}
+				}
+				else
+				{
+					// Skip one loop
+					if ( loop != 3 && loop != 5 && loop != 7 )
+						next();
 				}
 			});
 

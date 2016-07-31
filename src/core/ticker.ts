@@ -11,20 +11,55 @@ export namespace OBD2
 		{
 			private Ticker : any;
 
-			private commands : any;
+			/**
+			 * List of items
+			 */
+			private commands : any = [];
+
+			/**
+			 * Number of items
+			 */
+			private itemNums : any;
+
+			/**
+			 * Ticker time
+			 */
 			private timeout : number;
+
+			/**
+			 * Ticking count
+			 */
 			private counter : number;
+
+			/**
+			 * Tick in progress
+			 */
 			private waiting : boolean;
+
+			/**
+			 * Ticking is stopped
+			 */
 			private stopped : boolean;
 
-			constructor( timeout : number )
+			/**
+			 * Loop out time
+			 */
+			private loopout : number;
+
+			private waitNum : number;
+
+			/**
+			 * Constructor
+			 *
+			 * @param timeout
+			 * @param loopout
+			 */
+			constructor( timeout : number, loopout? : number )
 			{
 				this.timeout = timeout;
-
-				this.commands = [];
-				this.counter  = 0;
-				this.stopped  = true;
+				this.loopout  = (typeof loopout == "number" ? loopout : 1);
 				this.waiting  = false;
+				this.reset();
 
 				debug( "Ready" );
 			}
@@ -61,44 +96,6 @@ export namespace OBD2
 			}
 
 			/**
-			 * Get next tick
-			 */
-			public writeNext() : void
-			{
-				setTimeout(() => {
-					if ( this.commands.length > 0 )
-					{
-						this.waiting = true;
-
-						let cmd = this.commands.shift();
-
-						debug( "Tick " + String( cmd.type ) + " : " + String( cmd.data ) );
-
-						if ( typeof cmd.call == "function" )
-						{
-							cmd.call(
-								() => {
-									this.waiting = false;
-								},
-								cmd
-							);
-						}
-
-						if ( cmd.loop )
-						{
-							this.commands.push( cmd );
-						}
-
-						this.counter++;
-						if ( !this.waiting )
-						{
-							this.writeNext();
-						}
-					}
-				}, this.timeout);
-			}
-
-			/**
 			 * Adding item for ticker
 			 *
 			 * @param type - Name of data type
@@ -119,7 +116,10 @@ export namespace OBD2
 					loop : loop,
 					call : callBack,
 					fail : 0,
+					sync : true
 				} );
+
+				this.itemNums = this.commands.length;
 
 				this._autoTimer();
 			}
@@ -157,6 +157,8 @@ export namespace OBD2
 					}
 				}
 
+				this.itemNums = this.commands.length;
+
 				this._autoTimer();
 			}
 
@@ -172,6 +174,99 @@ export namespace OBD2
 				return this.commands;
 			}
 
+			private setWaiting( waiting ) {
+				this.waiting = waiting;
+			}
+
+			private getWaiting() {
+				return this.waiting;
+			}
+
+			/**
+			 * Ticker loop
+			 */
+			public loopTick = () =>
+			{
+				let cmd;
+
+				if ( this.commands.length > 0 )
+				{
+
+					cmd = this.commands[0];
+
+					if ( cmd )
+					{
+						// Sync item
+						if ( cmd.sync )
+						{
+							// Blocking?
+							if ( this.waiting )
+							{
+								this.waitNum++;
+
+								if ( this.waitNum >= this.loopout )
+								{
+									this.waiting = false;
+									this.waitNum = 0;
+
+									this.commands.shift();
+
+									if ( cmd.loop )
+									{
+										this.commands.push(cmd);
+									}
+								}
+								else
+								{
+									cmd.fail++;
+								}
+							}
+							// No blocking
+							else
+							{
+								if ( typeof cmd.call == "function" )
+								{
+									this.waiting = true;
+
+									cmd.call(() =>
+									{
+										if ( cmd.sync )
+										{
+											this.waiting = false;
+											this.waitNum = 0;
+										}
+
+										this.commands.shift();
+
+										if ( cmd.loop )
+										{
+											this.commands.push(cmd);
+										}
+									}, cmd );
+								}
+							}
+						}
+						// Async item
+						else
+						{
+							cmd.call(() =>
+							{
+								if ( cmd.loop )
+								{
+									this.commands.push(cmd);
+								}
+							}, cmd );
+
+							this.commands.shift();
+						}
+
+
+					}
+				}
+
+				setTimeout(this.loopTick, this.timeout);
+			};
+
 			/**
 			 * Starting ticker loop
 			 */
@@ -179,50 +274,52 @@ export namespace OBD2
 			{
 				debug( "Start" );
 
-				if ( !this.stopped )
+				this.counter  = 0;
+				this.stopped  = false;
+				this.waiting  = false;
+				this.waitNum  = 0;
+
+				if ( !this.Ticker )
 				{
-					this.stopped = false;
-
-					this.writeNext();
+					this.Ticker = setTimeout(this.loopTick, this.timeout);
 				}
-
-				this.counter = 0;
 			}
 
 			/**
-			 *
 			 * Stopping ticker loop
 			 */
 			public stop()
 			{
 				debug( "Stop" );
 
-				this.commands = [];
-				this.counter  = 0;
-				this.stopped  = true;
-				this.waiting  = false;
+				clearTimeout(this.Ticker);
+				this.reset();
 			}
 
 			/**
-			 * Pausing ticker loop
+			 * Reset values
 			 */
-			public pause()
+			public reset()
 			{
-				debug( "Pause" );
-
+				this.commands = [];
+				this.counter  = 0;
 				this.stopped  = true;
-				this.waiting  = false;
+				this.waitNum  = 0;
+
+				clearTimeout(this.Ticker);
 			}
 
+			/**
+			 * Automatic timer start or stop
+			 * Used in addItem and delItem
+			 * 
+			 * @private
+			 */
 			private _autoTimer()
 			{
 				if ( this.commands.length > 0 )
 				{
-					if ( this.stopped )
-					{
-						//this.start();
-						this.writeNext();
-					}
+					this.start();
 				}
 				else
 				{
