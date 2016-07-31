@@ -100,8 +100,11 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#ticker" class="tsd-kind-icon">Ticker</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#commands" class="tsd-kind-icon">commands</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#counter" class="tsd-kind-icon">counter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#itemnums" class="tsd-kind-icon">item<wbr>Nums</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#loopout" class="tsd-kind-icon">loopout</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#stopped" class="tsd-kind-icon">stopped</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#timeout" class="tsd-kind-icon">timeout</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#waitnum" class="tsd-kind-icon">wait<wbr>Num</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#waiting" class="tsd-kind-icon">waiting</a></li>
 							</ul>
 						</section>
@@ -112,11 +115,13 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#additem" class="tsd-kind-icon">add<wbr>Item</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#delitem" class="tsd-kind-icon">del<wbr>Item</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#getlist" class="tsd-kind-icon">get<wbr>List</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#getwaiting" class="tsd-kind-icon">get<wbr>Waiting</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#hashitem" class="tsd-kind-icon">hash<wbr>Item</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#pause" class="tsd-kind-icon">pause</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#looptick" class="tsd-kind-icon">loop<wbr>Tick</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#reset" class="tsd-kind-icon">reset</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_core_ticker_.obd2.core.ticker.html#setwaiting" class="tsd-kind-icon">set<wbr>Waiting</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#start" class="tsd-kind-icon">start</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#stop" class="tsd-kind-icon">stop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_ticker_.obd2.core.ticker.html#writenext" class="tsd-kind-icon">write<wbr>Next</a></li>
 							</ul>
 						</section>
 					</div>
@@ -128,19 +133,31 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Ticker<span class="tsd-signature-symbol">(</span>timeout<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_core_ticker_.obd2.core.ticker.html" class="tsd-signature-type">Ticker</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Ticker<span class="tsd-signature-symbol">(</span>timeout<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, loopout<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_core_ticker_.obd2.core.ticker.html" class="tsd-signature-type">Ticker</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L18">core/ticker.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L49">core/ticker.ts:49</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructor</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>timeout: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> loopout: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_core_ticker_.obd2.core.ticker.html" class="tsd-signature-type">Ticker</a></h4>
@@ -156,19 +173,24 @@
 					<div class="tsd-signature tsd-kind-icon">Ticker<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L12">core/ticker.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L12">core/ticker.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="commands" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> commands</h3>
-					<div class="tsd-signature tsd-kind-icon">commands<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<div class="tsd-signature tsd-kind-icon">commands<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L14">core/ticker.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L17">core/ticker.ts:17</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>List of items</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="counter" class="tsd-anchor"></a>
@@ -176,9 +198,44 @@
 					<div class="tsd-signature tsd-kind-icon">counter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L16">core/ticker.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L32">core/ticker.ts:32</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Ticking count</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="itemnums" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> item<wbr>Nums</h3>
+					<div class="tsd-signature tsd-kind-icon">item<wbr>Nums<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L22">core/ticker.ts:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Number of items</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="loopout" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> loopout</h3>
+					<div class="tsd-signature tsd-kind-icon">loopout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L47">core/ticker.ts:47</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Loop out time</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="stopped" class="tsd-anchor"></a>
@@ -186,9 +243,14 @@
 					<div class="tsd-signature tsd-kind-icon">stopped<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L18">core/ticker.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L42">core/ticker.ts:42</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Ticking is stopped</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="timeout" class="tsd-anchor"></a>
@@ -196,7 +258,22 @@
 					<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L15">core/ticker.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L27">core/ticker.ts:27</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Ticker time</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="waitnum" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> wait<wbr>Num</h3>
+					<div class="tsd-signature tsd-kind-icon">wait<wbr>Num<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L49">core/ticker.ts:49</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -206,9 +283,14 @@
 					<div class="tsd-signature tsd-kind-icon">waiting<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L17">core/ticker.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L37">core/ticker.ts:37</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tick in progress</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -223,9 +305,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L231">core/ticker.ts:231</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L318">core/ticker.ts:318</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Automatic timer start or stop
+									Used in addItem and delItem</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -240,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L111">core/ticker.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L108">core/ticker.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -294,7 +382,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L135">core/ticker.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L135">core/ticker.ts:135</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -332,7 +420,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L170">core/ticker.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L172">core/ticker.ts:172</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,6 +438,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getwaiting" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Waiting</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Waiting<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L181">core/ticker.ts:181</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="hashitem" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> hash<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -359,7 +464,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L39">core/ticker.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L74">core/ticker.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -381,23 +486,68 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="pause" class="tsd-anchor"></a>
-					<h3>pause</h3>
+					<a name="looptick" class="tsd-anchor"></a>
+					<h3>loop<wbr>Tick</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">pause<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">loop<wbr>Tick<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L224">core/ticker.ts:224</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L188">core/ticker.ts:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Pausing ticker loop</p>
+									<p>Ticker loop</p>
 								</div>
 							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="reset" class="tsd-anchor"></a>
+					<h3>reset</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">reset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L302">core/ticker.ts:302</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset values</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="setwaiting" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> set<wbr>Waiting</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Waiting<span class="tsd-signature-symbol">(</span>waiting<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L177">core/ticker.ts:177</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>waiting: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -412,7 +562,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L178">core/ticker.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L273">core/ticker.ts:273</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -434,34 +584,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L209">core/ticker.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/b1024a4/src/core/ticker.ts#L291">core/ticker.ts:291</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Stopping ticker loop</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="writenext" class="tsd-anchor"></a>
-					<h3>write<wbr>Next</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Next<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/sipimokus/node-obd2/blob/1da71ec/src/core/ticker.ts#L66">core/ticker.ts:66</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get next tick</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -559,10 +687,19 @@
 								<a href="_core_ticker_.obd2.core.ticker.html#counter" class="tsd-kind-icon">counter</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_core_ticker_.obd2.core.ticker.html#itemnums" class="tsd-kind-icon">item<wbr>Nums</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_core_ticker_.obd2.core.ticker.html#loopout" class="tsd-kind-icon">loopout</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_core_ticker_.obd2.core.ticker.html#stopped" class="tsd-kind-icon">stopped</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_core_ticker_.obd2.core.ticker.html#timeout" class="tsd-kind-icon">timeout</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_core_ticker_.obd2.core.ticker.html#waitnum" class="tsd-kind-icon">wait<wbr>Num</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_core_ticker_.obd2.core.ticker.html#waiting" class="tsd-kind-icon">waiting</a>
@@ -580,19 +717,25 @@
 								<a href="_core_ticker_.obd2.core.ticker.html#getlist" class="tsd-kind-icon">get<wbr>List</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_core_ticker_.obd2.core.ticker.html#getwaiting" class="tsd-kind-icon">get<wbr>Waiting</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_core_ticker_.obd2.core.ticker.html#hashitem" class="tsd-kind-icon">hash<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_core_ticker_.obd2.core.ticker.html#pause" class="tsd-kind-icon">pause</a>
+								<a href="_core_ticker_.obd2.core.ticker.html#looptick" class="tsd-kind-icon">loop<wbr>Tick</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_core_ticker_.obd2.core.ticker.html#reset" class="tsd-kind-icon">reset</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_core_ticker_.obd2.core.ticker.html#setwaiting" class="tsd-kind-icon">set<wbr>Waiting</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_core_ticker_.obd2.core.ticker.html#start" class="tsd-kind-icon">start</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_core_ticker_.obd2.core.ticker.html#stop" class="tsd-kind-icon">stop</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_core_ticker_.obd2.core.ticker.html#writenext" class="tsd-kind-icon">write<wbr>Next</a>
 							</li>
 						</ul>
 					</li>
