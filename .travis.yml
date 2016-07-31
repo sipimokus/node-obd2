@@ -18,19 +18,17 @@ cache:
 
 sudo: false
 
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.9
+
 matrix:
   fast_finish: true
   allow_failures:
   - os: osx
-
-script:
-  # Run test script, depending on istanbul install
-  - "test ! -z $(npm -ps ls istanbul) || npm test"
-  - "test   -z $(npm -ps ls istanbul) || npm run-script test-ci"
-
-#after_script:
-#  - "test -e ./coverage/lcov.info && npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
-
 
 # Example
 # https://github.com/octoblu/gateblu-forever/blob/master/.travis.yml
