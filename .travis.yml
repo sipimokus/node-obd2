@@ -49,6 +49,7 @@ before_install:
 
 install:
   - nvm install $NODE_VERSION
+  - npm config delete prefix
   - nvm use $NODE_VERSION
   - nvm alias default $NODE_VERSION
   - node --version
