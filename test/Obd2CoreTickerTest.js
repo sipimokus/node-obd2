@@ -56,6 +56,7 @@ describe( 'OBD2.Core.Ticker', function()
 		it( 'Testing adding item', function()
 		{
 			subject.addItem("PID", sendData, false);
+
 			asserts.deepEqual( subject.getList(), [
 				{
 					hash : subject.hashItem("PID", sendData),
@@ -76,8 +77,8 @@ describe( 'OBD2.Core.Ticker', function()
 		it( 'Testing remove', function()
 		{
 			subject.addItem("PID", sendData, false);
-
 			subject.delItem("PID", sendData);
+
 			asserts.deepEqual( subject.getList(), [], "Ticker list error" );
 		});
 
@@ -90,6 +91,7 @@ describe( 'OBD2.Core.Ticker', function()
 			subject.delItem("PID", sendData);
 			subject.delItem("PID_FOO", sendData);
 			subject.delItem("PID_BAR", sendData);
+
 			asserts.deepEqual( subject.getList(), [], "Ticker list error" );
 		});
 
@@ -97,6 +99,7 @@ describe( 'OBD2.Core.Ticker', function()
 		{
 			subject.addItem("PID", sendData, false);
 			subject.delItem("PID_FOO", sendData);
+
 			asserts.deepEqual( subject.getList(), [
 				{
 					hash : subject.hashItem("PID", sendData),
