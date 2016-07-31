@@ -1,42 +1,65 @@
 language:
-  - node_js
+#  - node_js
+  - objective-c
 
-node_js:
-  - "5.12"
-  - "4.4"
-  - "iojs"
-  - "0.12"
+#node_js:
+#  - "5.12"
+#  - "4.4"
+#  - "0.12"
+#  - "iojs"
 
 os:
   - linux
   - osx
+
+env:
+  - NODE_VERSION="6.3"
+  - NODE_VERSION="5.12"
+  - NODE_VERSION="4.4"
+  - NODE_VERSION="iojs"
+  - NODE_VERSION="0.12"
+
 
 cache:
   bundler: true
   directories:
   - node_modules
 
-sudo: required
+sudo: false
 
 matrix:
-  fast_finish: true
   allow_failures:
   - os: osx
 
+services:
+  - redis
+
 before_install:
-  # This fixes a problem with apt-get failing later, see http://docs.travis-ci.com/user/installing-dependencies/#Installing-Ubuntu-packages
-  - sudo apt-get update -qq
-  # We install all dependencies for node-opencv using apt-get
-  - sudo apt-get install libcv-dev
-  - sudo apt-get install libopencv-dev
-  - sudo apt-get install libhighgui-dev
-  # Get commit message to check if we should publish binary
-  - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
-  # Put local npm modules .bin on PATH
-  - export PATH=./node_modules/.bin/:$PATH
-  # Install node-gyp and node-pre-gyp so it is available for packaging and publishing
-  - npm install node-gyp -g
-  - npm install node-pre-gyp
+  # nvm is not yet supported on osx, manually install
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install nvm; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then source $(brew --prefix nvm)/nvm.sh; fi
+
+  # nvm and npm
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - source ~/.nvm/nvm.sh
+
+  # Setup Node.js version-specific dependencies
+  - "test $TRAVIS_NODE_VERSION != '0.8' || npm rm --save-dev istanbul"
+
+install:
+  - nvm install $NODE_VERSION
+  - node --version
+  - npm install
+
+script:
+  # Run test script, depending on istanbul install
+  - "test ! -z $(npm -ps ls istanbul) || npm test"
+  - "test   -z $(npm -ps ls istanbul) || npm run-script test-ci"
+
+#after_script:
+#  - "test -e ./coverage/lcov.info && npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
+
 
 # Example
 # https://github.com/octoblu/gateblu-forever/blob/master/.travis.yml
