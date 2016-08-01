@@ -10,7 +10,7 @@ var OBD = new obd2({
     serial  : "usb",   // usb, bluetooth
     port    : "COM5",   // Device COM port / path
     baud    : 38400,    // Device baud rate
-    delay   : 50,       // Ticker delay time (ms)
+    delay   : 500,       // Ticker delay time (ms)
     cleaner : true      // Automatic ticker list cleaner ( ex. PID not supported, no response )
 });
 
