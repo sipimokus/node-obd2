@@ -7,10 +7,10 @@ process.env.DEBUG      = "Example,OBD2.*";
 var obd2 = require("../index");
 var OBD = new obd2({
     device  : "ELM327", // Device type
-    serial  : "usb",   // usb, bluetooth
+    serial  : "fake",   // usb, bluetooth
     port    : "COM5",   // Device COM port / path
     baud    : 38400,    // Device baud rate
-    delay   : 500,       // Ticker delay time (ms)
+    delay   : 50,       // Ticker delay time (ms)
     cleaner : true      // Automatic ticker list cleaner ( ex. PID not supported, no response )
 });
 
