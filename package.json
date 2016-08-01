@@ -7,7 +7,7 @@
     "start": "node example/server.js",
     "typings": "cd src && typings install",
     "lint": "tsconfig-lint && tslint -c tslint.json \"src/**/*.ts\"",
-    "docs": "typedoc --options typedoc.json ./src/ && git add docs/* && git commit -m \"Docs updated\"",
+    "docs": "typedoc --options typedoc.json ./src/ && git add docs/* && git commit -m \"Updated documentation\"",
     "build": "node bin/build && tsc",
     "test": "mocha --reporter spec test"
   },

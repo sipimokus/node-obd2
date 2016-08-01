@@ -3,7 +3,7 @@
   "tagName": "v%s",
   "scripts": {
     "preupdate":  "echo 'Bumping version and running tests'",
-    "precommit":  "npm test",
+    "precommit":  "npm run docs && npm test",
     "postcommit": "git push && git push --tags && npm publish"
   }
 }
