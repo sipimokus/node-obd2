@@ -63,21 +63,21 @@ export namespace OBD2
 
 						return new _blueTooth.OBD2.Serial.Bluetooth( port, options );
 
-						break;
+						//break;
 
 					case "fake":
 					case "fakeserial":
 
 						return new _fakeSerial.OBD2.Serial.Fake( port, options );
 
-						break;
+						//break;
 
 					case "usb":
 					case "serial":
 
 						return new _usbSerial.OBD2.Serial.Usb( port, options );
 
-						break;
+						//break;
 
 					default:
 						return undefined;

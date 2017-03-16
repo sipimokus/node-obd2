@@ -25,21 +25,29 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 240px;
+            height: 90px;
             overflow: scroll;
         }
         #pid-list
         {
             position: absolute;
+            top: 5%;
+            left: 0;
+            width: 25%;
+            height: 75%;
+        }
+        #manual-start
+        {
+            position: absolute;
             top: 0;
             left: 0;
             width: 25%;
-            height: 70%;
+            height: 5%;
         }
         #dtc-list
          {
              position: absolute;
-             top: 60%;
+             top: 75%;
              width: 25%;
              height: 10%;
          }
@@ -48,7 +56,7 @@
             right: 0;
             top: 0;
             width: 75%;
-            height: 70%;
+            height: 85%;
             background: black;
         }
         .gauge-elem {
@@ -69,6 +77,10 @@
         $(document).ready(function ()
         {
             socket.emit("pidTickerList", []);
+
+            $(document).on("click", "#manual-start", function () {
+                socket.emit("pidTickerList", []);
+            });
 
             socket.on('obd2', function( type, elem, data )
             {
@@ -248,8 +260,11 @@
 <ul id="messages"></ul>
 </div>
 <div id="gauges-container"></div>
-<select id="pid-list" multiple></select>
+<select id="pid-list" multiple>
+    <option id="0D">0D</option>
+</select>
 <select id="dtc-list" multiple></select>
+<button id="manual-start">START</button>
 <!--
 <ul id="messages"></ul>
 <form action="">

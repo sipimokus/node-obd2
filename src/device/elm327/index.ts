@@ -16,7 +16,7 @@ export namespace OBD2
 				Serial.sendAT( "AT Z" );
 
 				// Turns off extra line feed and carriage return
-				Serial.sendAT( "AT L0" );
+				Serial.sendAT( "AT L0	" );
 
 				// Turns off echo.
 				Serial.sendAT( "AT E0" );

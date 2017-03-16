@@ -1,6 +1,6 @@
 /// <reference path="../typings/main.d.ts"/>
 
-let SerialPort : any = require( "serialport" ).SerialPort;
+let SerialPort : any = require( "serialport" );
 import baseSerial    = require("./base");
 
 export namespace OBD2
@@ -22,7 +22,7 @@ export namespace OBD2
 				this.setPort( port );
 				this.setOptions( options );
 				this.setSerial(
-					new SerialPort( port, options, false )
+					new SerialPort( port, options )
 				);
 
 			}

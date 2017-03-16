@@ -94,8 +94,9 @@ export namespace OBD2
 			 *
 			 * @test Obd2CorePidTest
 			 */
-			public _loadPidEcuList( returnType : string, returnValue : string ) : boolean
+			public _loadPidEcuList = ( returnType : string, returnValue : string ) : boolean =>
 			{
+				console.log("HMMMM", returnType, returnValue);
 				let decodeList =
 					{
 						0 : [ 0, 0, 0, 0 ],
@@ -183,6 +184,8 @@ export namespace OBD2
 				{
 					return self.indexOf( value ) === index;
 				} );
+
+				console.log("HEEEE", tmpFind, this.listEcu);
 
 				return tmpFind;
 			}

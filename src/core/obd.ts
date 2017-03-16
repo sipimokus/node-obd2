@@ -1,5 +1,6 @@
 /// <reference path="../typings/main.d.ts"/>
 
+import {createSecureContext} from "tls";
 let debug : debug.IDebug = require( "debug" )( "OBD2.Core.OBD" );
 
 export namespace OBD2
@@ -32,6 +33,81 @@ export namespace OBD2
 				debug( "Ready" );
 			}
 
+			public parseDataStreamReady(messageString, cb) {
+				debug( "   Serial data line : " + messageString );
+
+				let forString, arrayOfCommands;
+
+				if ( messageString === "" )
+				{
+					return;
+				}
+
+				let reply = this.parseCommand( messageString );
+
+				if ( this._deviceCommands.indexOf( messageString ) > -1 )
+				{
+					cb( "ecu", reply, messageString );
+				}
+				else
+				{
+
+					if ( typeof reply.value === "undefined" || !reply.name || (!reply.mode && !reply.pid) )
+					{
+						cb( "bug", reply, messageString );
+					}
+					else if ( reply.mode === "41" )
+					{
+						cb( "pid", reply, messageString );
+					}
+					else if ( reply.mode === "43" )
+					{
+						cb( "dtc", reply, messageString );
+					}
+
+				}
+
+			}
+
+			private parseDataLCommands( dataString: string, splitChar: string, cb: any )
+			{
+				let firstData  = "",
+					secondData = "",
+					tmpString;
+
+				if ( !splitChar || !dataString || typeof dataString !== "string" )
+				{
+					return;
+				}
+
+				if ( dataString.indexOf(splitChar) > -1 )
+				{
+					tmpString  = dataString.split(splitChar);
+
+					for ( let i = 0; i < tmpString.length; i++ )
+					{
+						if ( tmpString[i] === "\r" ||
+							 tmpString[i] === "\n" ||
+							 tmpString[i] === splitChar ||
+							 !tmpString[i] )
+						{
+							continue;
+						}
+
+						if ( firstData === "" ) {
+							firstData = tmpString[i];
+						} else {
+							secondData+= tmpString[i];
+						}
+					}
+
+					this.parseDataStreamReady(firstData, cb);
+					dataString = this._dataReceived = secondData;
+				}
+
+				return dataString;
+			}
+
 
 			/**
 			 * Parse Serial data stream to PID details
@@ -39,74 +115,27 @@ export namespace OBD2
 			 * @param data
 			 * @param cb
 			 */
-			public parseDataStream( data : any, cb : any )
-			{
-				let currentString, forString, arrayOfCommands;
+			public parseDataStream( data : any, cb : any ) {
+				let currentString, forString, arrayOfCommands, dataString;
+				let modifiedSuccess = false;
+				let delimiters = [">", "\r", "..."];
 
 				// making sure it's a utf8 string
-				currentString   = this._dataReceived + data.toString( "utf8" );
-				arrayOfCommands = currentString.split( ">" );
+				dataString = data.toString("utf8");
+				currentString = this._dataReceived + dataString;
 
-				if ( arrayOfCommands.length < 2 )
-				{
-					if ( this._deviceCommands.indexOf( this._dataReceived.split( "\r" )[ 0 ] ) > -1 )
-					{
-						cb( "ecu", arrayOfCommands, this._dataReceived );
-						this._dataReceived = "";
+				for ( let i = 0; i < delimiters.length; i++ ) {
+					if ( typeof currentString === "string" && currentString.indexOf(delimiters[i]) > -1 ) {
+						currentString = this.parseDataLCommands( currentString, delimiters[i], cb );
+						modifiedSuccess = true;
 					}
 				}
-				else
-				{
-					for ( let commandNumber = 0; commandNumber < arrayOfCommands.length; commandNumber++ )
-					{
-						forString = arrayOfCommands[ commandNumber ];
 
-						if ( forString === "" )
-						{
-							continue;
-						}
-
-						let multipleMessages = forString.split( "\r" );
-						for ( let messageNumber = 0; messageNumber < multipleMessages.length; messageNumber++ )
-						{
-							let messageString = multipleMessages[ messageNumber ];
-
-							if ( messageString === "" )
-							{
-								continue;
-							}
-
-							let reply = this.parseCommand( messageString );
-
-							if ( this._deviceCommands.indexOf( messageString ) > -1 )
-							{
-								cb( "ecu", reply, messageString );
-							}
-							else
-							{
-
-								if ( !reply.value || !reply.name || (!reply.mode && !reply.pid) )
-								{
-									cb( "bug", reply, messageString );
-								}
-								else if ( reply.mode === "41" )
-								{
-									cb( "pid", reply, messageString );
-								}
-								else if ( reply.mode === "43" )
-								{
-									cb( "dtc", reply, messageString );
-								}
-
-							}
-
-						}
-
-					}
-
+				if (!modifiedSuccess) {
+					this._dataReceived = currentString;
 				}
-
 			}
+
 
 			/**
 			 * Parses a hexadecimal string to a reply object. Uses PIDS.

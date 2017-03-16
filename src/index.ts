@@ -51,7 +51,8 @@ export namespace OBD2
 			this.Ticker = new Ticker( this._options.delay );
 			this.Device = new Device( this._options.device );
 			this.Serial = new Serial( this._options.serial, this._options.port, {
-				baudrate : this._options.baud
+				baudrate : this._options.baud,
+				autoOpen : false,
 			});
 
 			debug( "Ready" );
@@ -63,6 +64,7 @@ export namespace OBD2
 			{
 				this.OBD.parseDataStream( data, ( type, mess ) =>
 				{
+					//console.log("HM123", data, type, mess);
 					this.emit( type, mess, data );
 					this.emit( "dataParsed", type, mess, data );
 				} );
@@ -110,15 +112,22 @@ export namespace OBD2
 		public listPID( callBack : any ) : void
 		{
 			let pidSupportList = [ "00", "20", "40", "60", "80", "A0", "C0" ];
-
+			console.log("pID lista", this.PID.getList());
+			//process.exit();
 			if ( this.PID.getList().length > 0 )
 			{
 				callBack( this.PID.getList() );
 			}
 			else
 			{
+				console.log("1 pID lista", this.PID.getList());
+
+
 				this._tickListPID( pidSupportList, ( a ) =>
 				{
+//					console.log("callBack");
+//					process.exit();
+
 					callBack( this.PID.getList() );
 				} );
 			}
@@ -309,23 +318,29 @@ export namespace OBD2
 			}
 
 			let cmdPid = pidList.shift();
-
+console.log("cmdPin", cmdPid);
 			if ( this.PID.getListECU().length > 0 && this.PID.getListECU().indexOf( cmdPid ) < 0 )
 			{
+				console.log("CMD1");
 				callBack();
 			}
-
+console.log("CMD2");
+			setTimeout(() => {
 			this.sendPID( cmdPid, "01", ( mess, data ) =>
 			{
+				console.log("CMD3");
 				if ( this.PID._loadPidEcuList( mess.name, mess.value ) )
 				{
+					console.log("CMD4");
 					this._tickListPID( pidList, callBack );
 				}
 				else
 				{
+					console.log("CMD5");
 					callBack();
 				}
 			} );
+			}, 3000);
 
 		}
 
